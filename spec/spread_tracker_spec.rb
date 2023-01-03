@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "spread_tracker"
+require "super_spreader/spread_tracker"
 
 require "active_job"
 
-RSpec.describe SpreadTracker do
+RSpec.describe SuperSpreader::SpreadTracker do
   it "has a default initial_id" do
     spread_tracker = build_spread_tracker
 
@@ -53,7 +53,7 @@ RSpec.describe SpreadTracker do
   end
 
   def build_spread_tracker
-    SpreadTracker.new(FakeJob, FakeModel)
+    described_class.new(FakeJob, FakeModel)
   end
 
   class FakeJob < ActiveJob::Base
