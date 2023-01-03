@@ -11,4 +11,12 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.before :suite do
+    SuperSpreader.redis = Redis.new(url: ENV["REDIS_URL"])
+  end
+
+  config.before do
+    SuperSpreader.redis.flushall
+  end
 end
