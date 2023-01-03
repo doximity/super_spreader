@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "peak_schedule"
+require "super_spreader/peak_schedule"
 
-RSpec.describe PeakSchedule do
+RSpec.describe SuperSpreader::PeakSchedule do
   describe "#on_peak?" do
     it "categorizes times into on- or off-peak" do
       schedule = described_class.new(on_peak_wday_range: 1..5, # M-F
