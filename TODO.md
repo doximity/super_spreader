@@ -1,0 +1,2 @@
+- [ ] Test against Ruby 3
+- [ ] Test against Rails 7
