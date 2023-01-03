@@ -1,1 +1,1 @@
-# super_spreader
+# SuperSpreader
