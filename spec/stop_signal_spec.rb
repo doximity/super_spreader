@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "stop_signal"
+require "super_spreader/stop_signal"
 
-RSpec.describe StopSignal do
+RSpec.describe SuperSpreader::StopSignal do
   it "has a lifecycle that allows stopping a job" do
     # Default
     expect(StopSignalFakeJob.stopped?).to eq(false)
@@ -28,6 +28,6 @@ RSpec.describe StopSignal do
   end
 
   class StopSignalFakeJob
-    extend StopSignal
+    extend SuperSpreader::StopSignal
   end
 end
