@@ -10,10 +10,10 @@ RSpec.describe SuperSpreader::SchedulerConfig do
                      per_second_on_peak: 3.0,
                      per_second_off_peak: 9.0)
 
-      config.schedule = double(on_peak?: true)
+      config.schedule = instance_double(SuperSpreader::PeakSchedule, on_peak?: true)
       expect(config.per_second).to eq(3.0)
 
-      config.schedule = double(on_peak?: false)
+      config.schedule = instance_double(SuperSpreader::PeakSchedule, on_peak?: false)
       expect(config.per_second).to eq(9.0)
     end
 
