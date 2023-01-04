@@ -160,7 +160,6 @@ RSpec.describe SuperSpreader::Spreader do
   end
 
   class FakeJob < ActiveJob::Base
-    queue_as :bulk
   end
 
   class FakeModel
