@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "redis"
+
 module SuperSpreader
   module StopSignal
     def stop!

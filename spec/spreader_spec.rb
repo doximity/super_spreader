@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 require "active_job"
-
 require "spec_helper"
-require "super_spreader/spreader"
 
 RSpec.describe SuperSpreader::Spreader do
   it "has a default begin_at value" do

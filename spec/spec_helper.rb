@@ -1,12 +1,13 @@
-require "bundler/setup"
+# frozen_string_literal: true
 
-require "active_job"
+require "bundler/setup"
+require "super_spreader"
+
 require "active_support/testing/time_helpers"
 require "factory_bot"
 require "pry"
 require "rspec/rails/matchers"
 
-require "super_spreader"
 require "factories/scheduler_config"
 
 RSpec.configure do |config|

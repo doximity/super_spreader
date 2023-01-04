@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "redis"
+
 module SuperSpreader
   class SpreadTracker
     def initialize(job_class, model_class)

@@ -2,7 +2,6 @@
 
 require "spec_helper"
 require "support/log_spec_helper"
-require "super_spreader/scheduler_job"
 
 RSpec.describe SuperSpreader::SchedulerJob do
   include LogSpecHelper

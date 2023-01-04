@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "super_spreader/peak_schedule"
 
 RSpec.describe SuperSpreader::PeakSchedule do
   describe "#on_peak?" do

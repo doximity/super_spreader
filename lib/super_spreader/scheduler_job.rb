@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "active_job"
 require "json"
 require "super_spreader/scheduler_config"
 require "super_spreader/spreader"

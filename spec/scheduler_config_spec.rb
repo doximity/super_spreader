@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "super_spreader/scheduler_config"
 
 RSpec.describe SuperSpreader::SchedulerConfig do
   describe "#per_second" do

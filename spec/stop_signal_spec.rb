@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "super_spreader/stop_signal"
 
 RSpec.describe SuperSpreader::StopSignal do
   it "has a lifecycle that allows stopping a job" do
