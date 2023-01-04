@@ -1,5 +1,10 @@
 require "bundler/setup"
+
+require "active_job"
+require "rspec/rails/matchers"
+
 require "super_spreader"
+require "support/active_job_helper"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -12,8 +17,12 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  config.include ActiveJobHelper
+  config.include RSpec::Rails::Matchers
+
   config.before :suite do
     SuperSpreader.redis = Redis.new(url: ENV["REDIS_URL"])
+    ActiveJob::Base.queue_adapter = :test
   end
 
   config.before do

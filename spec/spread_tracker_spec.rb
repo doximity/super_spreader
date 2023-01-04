@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
+require "active_job"
+
 require "spec_helper"
 require "super_spreader/spread_tracker"
-
-require "active_job"
 
 RSpec.describe SuperSpreader::SpreadTracker do
   it "has a default initial_id" do
