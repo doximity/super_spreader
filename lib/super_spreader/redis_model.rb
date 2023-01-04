@@ -34,7 +34,7 @@ module SuperSpreader
       end
     end
 
-    # Primarily for factory_bot:lint
+    # Primarily for factory_bot
     alias save! save
 
     private
