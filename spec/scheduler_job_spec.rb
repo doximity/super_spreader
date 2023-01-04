@@ -2,9 +2,9 @@
 
 require "spec_helper"
 require "support/log_spec_helper"
-require "super_spreader_scheduler_job"
+require "super_spreader/scheduler_job"
 
-RSpec.describe SuperSpreaderSchedulerJob do
+RSpec.describe SuperSpreader::SchedulerJob do
   include LogSpecHelper
 
   before do
@@ -18,7 +18,6 @@ RSpec.describe SuperSpreaderSchedulerJob do
       expect(described_class.perform_now).to eq(nil)
     end
 
-    # Need new job_class_name
     it "enqueues reencrypt jobs as configured" do
       ExampleModelClass.create
       create(:scheduler_config,
@@ -33,11 +32,11 @@ RSpec.describe SuperSpreaderSchedulerJob do
           described_class.perform_now
         end
 
-        # FIXME: {"subject":"SuperSpreaderSchedulerJob","started_at":"2020-12-16T00:00:00Z"}
+        # FIXME: {"subject":"SuperSpreader::SchedulerJob","started_at":"2020-12-16T00:00:00Z"}
         expect(log).to eq(<<~LOG)
-          {"subject":"SuperSpreaderSchedulerJob","started_at":"2020-12-15T18:00:00-06:00"}
-          {"subject":"SuperSpreaderSchedulerJob","batch_size":80,"duration":3600,"job_class_name":"ExampleJob","per_second_on_peak":3.0,"per_second_off_peak":3.0,"on_peak_timezone":"America/Los_Angeles","on_peak_hour_begin":5,"on_peak_hour_end":17,"on_peak_wday_begin":1,"on_peak_wday_end":5}
-          {"subject":"SuperSpreaderSchedulerJob","next_id":0}
+          {"subject":"SuperSpreader::SchedulerJob","started_at":"2020-12-15T18:00:00-06:00"}
+          {"subject":"SuperSpreader::SchedulerJob","batch_size":80,"duration":3600,"job_class_name":"ExampleJob","per_second_on_peak":3.0,"per_second_off_peak":3.0,"on_peak_timezone":"America/Los_Angeles","on_peak_hour_begin":5,"on_peak_hour_end":17,"on_peak_wday_begin":1,"on_peak_wday_end":5}
+          {"subject":"SuperSpreader::SchedulerJob","next_id":0}
         LOG
 
         expect(described_class).not_to have_been_enqueued
@@ -59,13 +58,13 @@ RSpec.describe SuperSpreaderSchedulerJob do
           described_class.perform_now
         end
 
-        # FIXME: {"subject":"SuperSpreaderSchedulerJob","started_at":"2020-12-16T00:00:00Z"}
-        # FIXME: {"subject":"SuperSpreaderSchedulerJob","next_run_at":"2020-12-16T00:00:01.000Z"}
+        # FIXME: {"subject":"SuperSpreader::SchedulerJob","started_at":"2020-12-16T00:00:00Z"}
+        # FIXME: {"subject":"SuperSpreader::SchedulerJob","next_run_at":"2020-12-16T00:00:01.000Z"}
         expect(log).to eq(<<~LOG)
-          {"subject":"SuperSpreaderSchedulerJob","started_at":"2020-12-15T18:00:00-06:00"}
-          {"subject":"SuperSpreaderSchedulerJob","batch_size":1,"duration":1,"job_class_name":"ExampleJob","per_second_on_peak":1.0,"per_second_off_peak":1.0,"on_peak_timezone":"America/Los_Angeles","on_peak_hour_begin":5,"on_peak_hour_end":17,"on_peak_wday_begin":1,"on_peak_wday_end":5}
-          {"subject":"SuperSpreaderSchedulerJob","next_id":#{next_model.id}}
-          {"subject":"SuperSpreaderSchedulerJob","next_run_at":"2020-12-15T18:00:01-06:00"}
+          {"subject":"SuperSpreader::SchedulerJob","started_at":"2020-12-15T18:00:00-06:00"}
+          {"subject":"SuperSpreader::SchedulerJob","batch_size":1,"duration":1,"job_class_name":"ExampleJob","per_second_on_peak":1.0,"per_second_off_peak":1.0,"on_peak_timezone":"America/Los_Angeles","on_peak_hour_begin":5,"on_peak_hour_end":17,"on_peak_wday_begin":1,"on_peak_wday_end":5}
+          {"subject":"SuperSpreader::SchedulerJob","next_id":#{next_model.id}}
+          {"subject":"SuperSpreader::SchedulerJob","next_run_at":"2020-12-15T18:00:01-06:00"}
         LOG
 
         expect(described_class).to have_been_enqueued
