@@ -1,10 +1,12 @@
 require "bundler/setup"
 
 require "active_job"
+require "factory_bot"
 require "pry"
 require "rspec/rails/matchers"
 
 require "super_spreader"
+require "factories/super_spreader_scheduler_config"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -17,6 +19,7 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  config.include FactoryBot::Syntax::Methods
   config.include RSpec::Rails::Matchers
 
   config.before :suite do
