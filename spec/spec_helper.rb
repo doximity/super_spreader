@@ -25,9 +25,10 @@ RSpec.configure do |config|
   config.include RSpec::Rails::Matchers
 
   config.before :suite do
+    ActiveJob::Base.queue_adapter = :test
     SuperSpreader.logger = Logger.new(StringIO.new)
     SuperSpreader.redis = Redis.new(url: ENV["REDIS_URL"])
-    ActiveJob::Base.queue_adapter = :test
+    Time.zone = "UTC"
   end
 
   config.before do
