@@ -12,19 +12,7 @@ require "super_spreader/stop_signal"
 module SuperSpreader
   class Error < StandardError; end
 
-  def self.logger=(logger)
-    @logger = logger
-  end
-
-  def self.logger
-    @logger
-  end
-
-  def self.redis=(redis)
-    @redis = redis
-  end
-
-  def self.redis
-    @redis
+  class << self
+    attr_accessor :logger, :redis
   end
 end
