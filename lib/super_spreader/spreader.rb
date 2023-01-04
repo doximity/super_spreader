@@ -7,7 +7,7 @@ module SuperSpreader
     def initialize(job_class, model_class, spread_tracker: nil)
       @job_class = job_class
       @model_class = model_class
-      @spread_tracker = spread_tracker || SuperSpreader::SpreadTracker.new(job_class, model_class)
+      @spread_tracker = spread_tracker || SpreadTracker.new(job_class, model_class)
     end
 
     def spread(batch_size:, duration:, per_second:, initial_id:, begin_at: Time.now.utc)

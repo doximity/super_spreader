@@ -7,7 +7,7 @@ require "super_spreader/stop_signal"
 
 module SuperSpreader
   class SchedulerJob < ActiveJob::Base
-    extend SuperSpreader::StopSignal
+    extend StopSignal
 
     def perform
       return if self.class.stopped?
@@ -15,7 +15,7 @@ module SuperSpreader
       log(started_at: Time.current.iso8601)
       log(config.serializable_hash)
 
-      super_spreader = SuperSpreader::Spreader.new(*config.super_spreader_config)
+      super_spreader = Spreader.new(*config.super_spreader_config)
       next_id = super_spreader.enqueue_spread(config.spread_options)
       log(next_id: next_id)
 
@@ -30,7 +30,7 @@ module SuperSpreader
     end
 
     def config
-      @config ||= SuperSpreader::SchedulerConfig.new
+      @config ||= SchedulerConfig.new
     end
 
     private
