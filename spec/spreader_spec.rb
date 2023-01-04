@@ -125,11 +125,9 @@ RSpec.describe Spreader do
   it "does not enqueue if initial_id is 0" do
     spread_tracker = FakeSpreadTracker.new(0)
 
-    with_test_adapter do
-      described_class.new(FakeJob, FakeModel, spread_tracker: spread_tracker)
+    described_class.new(FakeJob, FakeModel, spread_tracker: spread_tracker)
 
-      expect(FakeJob).not_to have_been_enqueued
-    end
+    expect(FakeJob).not_to have_been_enqueued
   end
 
   it "accepts the same arguments as spread when enqueuing" do
@@ -137,14 +135,11 @@ RSpec.describe Spreader do
     spread_tracker = FakeSpreadTracker.new(10)
     super_spreader = described_class.new(FakeJob, FakeModel, spread_tracker: spread_tracker)
 
-    with_test_adapter do
-      super_spreader.enqueue_spread(batch_size: 2, duration: 3, per_second: 1, begin_at: begin_at)
+    super_spreader.enqueue_spread(batch_size: 2, duration: 3, per_second: 1, begin_at: begin_at)
 
-      expect(FakeJob).to have_been_enqueued.at(Time.utc(2020, 11, 16, 22, 51, 59)).with(9, 10)
-      expect(FakeJob).to have_been_enqueued.at(Time.utc(2020, 11, 16, 22, 52,  0)).with(7,  8)
-      expect(FakeJob).to have_been_enqueued.at(Time.utc(2020, 11, 16, 22, 52,  1)).with(5,  6)
-    end
-
+    expect(FakeJob).to have_been_enqueued.at(Time.utc(2020, 11, 16, 22, 51, 59)).with(9, 10)
+    expect(FakeJob).to have_been_enqueued.at(Time.utc(2020, 11, 16, 22, 52,  0)).with(7,  8)
+    expect(FakeJob).to have_been_enqueued.at(Time.utc(2020, 11, 16, 22, 52,  1)).with(5,  6)
     expect(spread_tracker.initial_id).to eq(4)
   end
 
@@ -153,13 +148,10 @@ RSpec.describe Spreader do
     spread_tracker = FakeSpreadTracker.new(4)
     super_spreader = described_class.new(FakeJob, FakeModel, spread_tracker: spread_tracker)
 
-    with_test_adapter do
-      super_spreader.enqueue_spread(batch_size: 2, duration: 3, per_second: 1, begin_at: begin_at)
+    super_spreader.enqueue_spread(batch_size: 2, duration: 3, per_second: 1, begin_at: begin_at)
 
-      expect(FakeJob).to have_been_enqueued.at(Time.utc(2020, 11, 16, 22, 51, 59)).with(3, 4)
-      expect(FakeJob).to have_been_enqueued.at(Time.utc(2020, 11, 16, 22, 52, 0)).with(1, 2)
-    end
-
+    expect(FakeJob).to have_been_enqueued.at(Time.utc(2020, 11, 16, 22, 51, 59)).with(3, 4)
+    expect(FakeJob).to have_been_enqueued.at(Time.utc(2020, 11, 16, 22, 52, 0)).with(1, 2)
     expect(spread_tracker.initial_id).to eq(0)
   end
 

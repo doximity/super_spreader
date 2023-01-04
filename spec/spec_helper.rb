@@ -5,7 +5,6 @@ require "pry"
 require "rspec/rails/matchers"
 
 require "super_spreader"
-require "support/active_job_helper"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -18,7 +17,6 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.include ActiveJobHelper
   config.include RSpec::Rails::Matchers
 
   config.before :suite do
