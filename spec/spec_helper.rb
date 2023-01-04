@@ -28,6 +28,9 @@ RSpec.configure do |config|
     SuperSpreader.redis.flushall
   end
 
+  # Borrowed from rspec-rails
+  #
+  # https://github.com/rspec/rspec-rails/blob/c60ff7907559653cd9d1ec1a6113bf86c9359fab/spec/rspec/rails/matchers/active_job_spec.rb#L38-L43
   config.around do |example|
     original_logger = ActiveJob::Base.logger
     ActiveJob::Base.logger = Logger.new(nil) # Silence messages "[ActiveJob] Enqueued ...".

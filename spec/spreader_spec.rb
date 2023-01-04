@@ -3,9 +3,9 @@
 require "active_job"
 
 require "spec_helper"
-require "spreader"
+require "super_spreader/spreader"
 
-RSpec.describe Spreader do
+RSpec.describe SuperSpreader::Spreader do
   it "has a default begin_at value" do
     batches = spread(batch_size: 5, duration: 30, per_second: 1, initial_id: 20)
 
