@@ -25,11 +25,11 @@ module SuperSpreader
     end
 
     def save
-      redis.multi do
-        delete
+      redis.multi do |pipeline|
+        pipeline.del(redis_key)
 
         serializable_hash.each do |key, value|
-          redis.hset(redis_key, key, value)
+          pipeline.hset(redis_key, key, value)
         end
       end
     end
