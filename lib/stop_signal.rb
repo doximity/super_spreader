@@ -16,7 +16,7 @@ module StopSignal
   private
 
   def redis
-    Redis.current
+    SuperSpreader.redis
   end
 
   def stop_key
