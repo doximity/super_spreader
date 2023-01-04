@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :super_spreader_scheduler_config do
+  factory :scheduler_config, class: "SuperSpreader::SchedulerConfig" do
     batch_size { 70 }
     duration { 180 }
     job_class_name { "ExampleJob" }

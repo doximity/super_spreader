@@ -6,7 +6,7 @@ require "pry"
 require "rspec/rails/matchers"
 
 require "super_spreader"
-require "factories/super_spreader_scheduler_config"
+require "factories/scheduler_config"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

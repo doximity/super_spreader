@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "super_spreader_scheduler_config"
+require "super_spreader/scheduler_config"
 
-RSpec.describe SuperSpreaderSchedulerConfig do
+RSpec.describe SuperSpreader::SchedulerConfig do
   describe "#per_second" do
     it "chooses on peak vs off peak rates" do
-      config = build(:super_spreader_scheduler_config,
+      config = build(:scheduler_config,
                      per_second_on_peak: 3.0,
                      per_second_off_peak: 9.0)
 
@@ -18,7 +18,7 @@ RSpec.describe SuperSpreaderSchedulerConfig do
     end
 
     it "has default arguments" do
-      config = build(:super_spreader_scheduler_config)
+      config = build(:scheduler_config)
 
       expect(config.per_second).to be > 0.0
     end
