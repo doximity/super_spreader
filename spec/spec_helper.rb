@@ -1,6 +1,7 @@
 require "bundler/setup"
 
 require "active_job"
+require "active_support/testing/time_helpers"
 require "factory_bot"
 require "pry"
 require "rspec/rails/matchers"
@@ -19,10 +20,12 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  config.include ActiveSupport::Testing::TimeHelpers
   config.include FactoryBot::Syntax::Methods
   config.include RSpec::Rails::Matchers
 
   config.before :suite do
+    SuperSpreader.logger = Logger.new(StringIO.new)
     SuperSpreader.redis = Redis.new(url: ENV["REDIS_URL"])
     ActiveJob::Base.queue_adapter = :test
   end

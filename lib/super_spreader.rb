@@ -6,7 +6,14 @@ require "super_spreader/peak_schedule"
 
 module SuperSpreader
   class Error < StandardError; end
-  # Your code goes here...
+
+  def self.logger=(logger)
+    @logger = logger
+  end
+
+  def self.logger
+    @logger
+  end
 
   def self.redis=(redis)
     @redis = redis
