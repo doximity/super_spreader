@@ -27,4 +27,11 @@ RSpec.configure do |config|
   config.before do
     SuperSpreader.redis.flushall
   end
+
+  config.around do |example|
+    original_logger = ActiveJob::Base.logger
+    ActiveJob::Base.logger = Logger.new(nil) # Silence messages "[ActiveJob] Enqueued ...".
+    example.run
+    ActiveJob::Base.logger = original_logger
+  end
 end
