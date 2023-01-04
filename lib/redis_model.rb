@@ -43,6 +43,6 @@ class RedisModel
   end
 
   def redis
-    Redis.current
+    SuperSpreader.redis
   end
 end
