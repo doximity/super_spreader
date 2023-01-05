@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "activejob", "~> 6.1"
+  spec.add_dependency "activerecord", "~> 6.1"
   spec.add_dependency "activesupport", "~> 6.1"
   spec.add_dependency "activemodel", "~> 6.1"
   spec.add_dependency "redis", "< 5"
@@ -36,6 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rspec-rails", "~> 4.0"
+  spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "factory_bot", "~> 4.11"
   spec.add_development_dependency "pry"
 end
