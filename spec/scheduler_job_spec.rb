@@ -17,6 +17,29 @@ RSpec.describe SuperSpreader::SchedulerJob do
       expect(described_class.perform_now).to eq(nil)
     end
 
+    it "does nothing if there are no records" do
+      create(:scheduler_config,
+             batch_size: 80,
+             duration: 3600,
+             per_second_on_peak: 3,
+             per_second_off_peak: 3,
+             job_class_name: "ExampleJob")
+
+      travel_to(Time.new(2020, 12, 16, 0, 0, 0, 0)) do
+        log = capture_log do
+          described_class.perform_now
+        end
+
+        expect(log).to eq(<<~LOG)
+          {"subject":"SuperSpreader::SchedulerJob","started_at":"2020-12-16T00:00:00Z"}
+          {"subject":"SuperSpreader::SchedulerJob","batch_size":80,"duration":3600,"job_class_name":"ExampleJob","per_second_on_peak":3.0,"per_second_off_peak":3.0,"on_peak_timezone":"America/Los_Angeles","on_peak_hour_begin":5,"on_peak_hour_end":17,"on_peak_wday_begin":1,"on_peak_wday_end":5}
+          {"subject":"SuperSpreader::SchedulerJob","next_id":0}
+        LOG
+
+        expect(described_class).not_to have_been_enqueued
+      end
+    end
+
     it "enqueues reencrypt jobs as configured" do
       ExampleModelClass.create
       create(:scheduler_config,

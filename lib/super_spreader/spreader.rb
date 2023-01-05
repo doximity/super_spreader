@@ -35,7 +35,7 @@ module SuperSpreader
 
     def enqueue_spread(**opts)
       initial_id = @spread_tracker.initial_id
-      return if initial_id.zero?
+      return 0 if initial_id.zero?
 
       batches = spread(**opts.merge(initial_id: initial_id))
 
@@ -46,7 +46,10 @@ module SuperSpreader
       end
 
       last_begin_id = batches.last[:begin_id]
-      @spread_tracker.initial_id = last_begin_id - 1
+      next_id = last_begin_id - 1
+      @spread_tracker.initial_id = next_id
+
+      next_id
     end
 
     private
