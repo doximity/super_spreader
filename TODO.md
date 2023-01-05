@@ -1,2 +1,4 @@
+- [ ] Rename `model_class` to include `super_spreader`
+- [ ] Either combine the fake models or use a real ActiveRecord class
 - [ ] Test against Ruby 3
 - [ ] Test against Rails 7
