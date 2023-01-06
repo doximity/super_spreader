@@ -10,9 +10,6 @@ require "factory_bot"
 require "pry"
 require "rspec/rails/matchers"
 
-require "support/create_example_models_table"
-require "support/example_model"
-require "factories/example_model"
 require "factories/scheduler_config"
 
 RSpec.configure do |config|
@@ -38,19 +35,8 @@ RSpec.configure do |config|
     Time.zone = "UTC"
   end
 
-  # TODO: Some of this setup is unnecessary for some tests.  Consider
-  # refactoring to only run that setup when necessary if it becomes noticeable.
   config.before do
     SuperSpreader.redis.flushall
-
-    ActiveRecord::Base.establish_connection(
-      adapter: "sqlite3",
-      database: ":memory:" # https://www.sqlite.org/inmemorydb.html
-    )
-
-    ActiveRecord::Migration.suppress_messages do
-      CreateExampleModelsTable.migrate(:up)
-    end
   end
 
   # Borrowed from rspec-rails

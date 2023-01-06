@@ -2,10 +2,24 @@
 
 require "active_job"
 require "spec_helper"
+require "support/create_example_models_table"
+require "support/example_model"
 require "support/log_spec_helper"
+require "factories/example_model"
 
 RSpec.describe "Integration" do
   include LogSpecHelper
+
+  before do
+    ActiveRecord::Base.establish_connection(
+      adapter: "sqlite3",
+      database: ":memory:" # https://www.sqlite.org/inmemorydb.html
+    )
+
+    ActiveRecord::Migration.suppress_messages do
+      CreateExampleModelsTable.migrate(:up)
+    end
+  end
 
   it "can backfill using an example job" do
     create_list(:example_model, 1000)
