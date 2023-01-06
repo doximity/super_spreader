@@ -107,10 +107,8 @@ RSpec.describe "Integration" do
     tracker = SuperSpreader::SpreadTracker.new(ExampleBackfillJob, ExampleModel)
     tracker.initial_id = 500
 
-    log = capture_log do
-      perform_enqueued_jobs do
-        SuperSpreader::SchedulerJob.perform_now
-      end
+    perform_enqueued_jobs do
+      SuperSpreader::SchedulerJob.perform_now
     end
 
     processed_models = ExampleModel.where(id: 1..500)
