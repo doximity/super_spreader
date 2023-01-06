@@ -7,12 +7,8 @@ require "support/log_spec_helper"
 RSpec.describe "Integration" do
   include LogSpecHelper
 
-  before do
-    ExampleBackfillModel.reset!
-  end
-
   it "can backfill using an example job" do
-    1_000.times { ExampleBackfillModel.create }
+    create_list(:example_model, 1000)
 
     config = SuperSpreader::SchedulerConfig.new
 
@@ -55,13 +51,13 @@ RSpec.describe "Integration" do
     # log, but it's unclear whether that's because of `perform_enqueued_jobs`.
     # In any case, it's benign.
     expect(log.lines.length).to eq(15)
-    example_backfill_models = ExampleBackfillModel.where(id: 1..1000)
+    example_backfill_models = ExampleModel.where(id: 1..1000)
     expect(example_backfill_models.length).to eq(1000)
     expect(example_backfill_models.all? { |m| m.example_attribute.present? }).to eq(true)
   end
 
   it "can backfill using a manually-set initial_id" do
-    1_000.times { ExampleBackfillModel.create }
+    create_list(:example_model, 1000)
 
     config = SuperSpreader::SchedulerConfig.new
 
@@ -94,7 +90,7 @@ RSpec.describe "Integration" do
         "per_second_on_peak" => 3.0
       })
 
-    tracker = SuperSpreader::SpreadTracker.new(ExampleBackfillJob, ExampleBackfillModel)
+    tracker = SuperSpreader::SpreadTracker.new(ExampleBackfillJob, ExampleModel)
     tracker.initial_id = 500
 
     log = capture_log do
@@ -103,58 +99,19 @@ RSpec.describe "Integration" do
       end
     end
 
-    processed_models = ExampleBackfillModel.where(id: 1..500)
+    processed_models = ExampleModel.where(id: 1..500)
     expect(processed_models.length).to eq(500)
     expect(processed_models.all? { |m| m.example_attribute.present? }).to eq(true)
-    unprocessed_models = ExampleBackfillModel.where(id: 501..1000)
+    unprocessed_models = ExampleModel.where(id: 501..1000)
     expect(unprocessed_models.length).to eq(500)
     expect(unprocessed_models.all? { |m| m.example_attribute.present? }).to eq(false)
-  end
-
-  class ExampleBackfillModel
-    @@records = {}
-
-    attr_reader :id
-    attr_accessor :example_attribute
-
-    def initialize
-      @id = self.class.maximum + 1
-    end
-
-    def save
-      @@records[self.id] = self
-
-      true
-    end
-
-    def self.reset!
-      @@records = {}
-    end
-
-    def self.maximum(*)
-      @@records.length
-    end
-
-    def self.create(...)
-      instance = new(...)
-      instance.save
-      instance
-    end
-
-    def self.where(id:)
-      id_range = id
-
-      @@records.
-        select { |id, _instance| id_range.cover?(id) }.
-        values
-    end
   end
 
   class ExampleBackfillJob < ActiveJob::Base
     extend SuperSpreader::StopSignal
 
     def self.model_class
-      ExampleBackfillModel
+      ExampleModel
     end
 
     def perform(begin_id, end_id)
@@ -162,38 +119,39 @@ RSpec.describe "Integration" do
 
       # In a real application, this section would make use of the appropriate,
       # efficient database queries.
-
-      ExampleBackfillModel.where(id: begin_id..end_id).each do |example_backfill_model|
-        example_backfill_model.example_attribute = "example value"
+      ExampleModel.where(id: begin_id..end_id).each do |example_model|
+        example_model.update(example_attribute: "example value")
       end
     end
   end
 
   describe ExampleBackfillJob do
     it "has SuperSpreader support" do
-      expect(described_class.model_class).to eq(ExampleBackfillModel)
+      expect(described_class.model_class).to eq(ExampleModel)
     end
 
-    it "sets values on in-memory instances" do
-      example_backfill_model_1 = ExampleBackfillModel.create
-      example_backfill_model_2 = ExampleBackfillModel.create
+    it "sets values on instances" do
+      example_model_1 = create(:example_model)
+      example_model_2 = create(:example_model)
 
-      described_class.perform_now(example_backfill_model_1.id, example_backfill_model_2.id)
+      described_class.perform_now(example_model_1.id, example_model_2.id)
+      example_model_1.reload
+      example_model_2.reload
 
-      expect(example_backfill_model_1.example_attribute).to be_present
-      expect(example_backfill_model_1.example_attribute).to be_present
+      expect(example_model_1.example_attribute).to be_present
+      expect(example_model_2.example_attribute).to be_present
     end
 
     it "can be stopped" do
-      example_backfill_model_1 = ExampleBackfillModel.create
-      example_backfill_model_2 = ExampleBackfillModel.create
+      example_model_1 = create(:example_model)
+      example_model_2 = create(:example_model)
 
       described_class.stop!
-      described_class.perform_now(example_backfill_model_1.id, example_backfill_model_2.id)
+      described_class.perform_now(example_model_1.id, example_model_2.id)
 
       expect(described_class).to be_stopped
-      expect(example_backfill_model_1.example_attribute).not_to be_present
-      expect(example_backfill_model_1.example_attribute).not_to be_present
+      expect(example_model_1.example_attribute).not_to be_present
+      expect(example_model_2.example_attribute).not_to be_present
     end
   end
 end

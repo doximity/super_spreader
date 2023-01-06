@@ -12,6 +12,7 @@ require "rspec/rails/matchers"
 
 require "support/create_example_models_table"
 require "support/example_model"
+require "factories/example_model"
 require "factories/scheduler_config"
 
 RSpec.configure do |config|
