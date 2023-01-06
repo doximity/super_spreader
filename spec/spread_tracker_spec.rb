@@ -7,8 +7,8 @@ RSpec.describe SuperSpreader::SpreadTracker do
   it "has a default initial_id" do
     spread_tracker = build_spread_tracker
 
-    expect(spread_tracker.initial_id).
-      to eq(FakeModel.maximum(:id))
+    expect(spread_tracker.initial_id)
+      .to eq(FakeModel.maximum(:id))
   end
 
   it "allows setting the initial_id" do
@@ -24,8 +24,8 @@ RSpec.describe SuperSpreader::SpreadTracker do
 
     spread_tracker.initial_id = nil
 
-    expect(spread_tracker.initial_id).
-      to eq(FakeModel.maximum(:id))
+    expect(spread_tracker.initial_id)
+      .to eq(FakeModel.maximum(:id))
   end
 
   it "supports tracking multiple models" do

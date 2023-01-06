@@ -41,8 +41,8 @@ RSpec.describe "Integration" do
 
     config.save
 
-    expect(SuperSpreader::SchedulerConfig.new.serializable_hash).
-      to eq({
+    expect(SuperSpreader::SchedulerConfig.new.serializable_hash)
+      .to eq({
         "batch_size" => 10,
         "duration" => 10,
         "job_class_name" => "ExampleBackfillJob",
@@ -90,8 +90,8 @@ RSpec.describe "Integration" do
 
     config.save
 
-    expect(SuperSpreader::SchedulerConfig.new.serializable_hash).
-      to eq({
+    expect(SuperSpreader::SchedulerConfig.new.serializable_hash)
+      .to eq({
         "batch_size" => 10,
         "duration" => 10,
         "job_class_name" => "ExampleBackfillJob",

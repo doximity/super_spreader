@@ -6,17 +6,17 @@ RSpec.describe SuperSpreader::PeakSchedule do
   describe "#on_peak?" do
     it "categorizes times into on- or off-peak" do
       schedule = described_class.new(on_peak_wday_range: 1..5, # M-F
-                                     on_peak_hour_range: 4..18,
-                                     timezone: "America/Los_Angeles")
+        on_peak_hour_range: 4..18,
+        timezone: "America/Los_Angeles")
 
       # Thursday
       assert_off_peak(schedule, "2021-01-07T00:00:00-08:00")
       assert_off_peak(schedule, "2021-01-07T03:00:00-08:00")
       assert_off_peak(schedule, "2021-01-07T03:59:59-08:00")
-      assert_on_peak(schedule,  "2021-01-07T04:00:00-08:00")
-      assert_on_peak(schedule,  "2021-01-07T11:30:00-08:00")
-      assert_on_peak(schedule,  "2021-01-07T18:00:00-08:00")
-      assert_on_peak(schedule,  "2021-01-07T18:59:59-08:00")
+      assert_on_peak(schedule, "2021-01-07T04:00:00-08:00")
+      assert_on_peak(schedule, "2021-01-07T11:30:00-08:00")
+      assert_on_peak(schedule, "2021-01-07T18:00:00-08:00")
+      assert_on_peak(schedule, "2021-01-07T18:59:59-08:00")
       assert_off_peak(schedule, "2021-01-07T19:00:00-08:00")
       assert_off_peak(schedule, "2021-01-07T23:59:59-08:00")
 
@@ -34,8 +34,8 @@ RSpec.describe SuperSpreader::PeakSchedule do
 
     it "can be set to be always on-peak" do
       schedule = described_class.new(on_peak_wday_range: 0..6, # all week
-                                     on_peak_hour_range: 0..23,
-                                     timezone: "America/Los_Angeles")
+        on_peak_hour_range: 0..23,
+        timezone: "America/Los_Angeles")
 
       # Sunday
       assert_on_peak(schedule, "2021-01-03T00:00:00-08:00")

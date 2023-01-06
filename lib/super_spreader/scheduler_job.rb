@@ -37,7 +37,7 @@ module SuperSpreader
     private
 
     def log(hash)
-      SuperSpreader.logger.info({ subject: self.class.name }.merge(hash).to_json)
+      SuperSpreader.logger.info({subject: self.class.name}.merge(hash).to_json)
     end
   end
 end

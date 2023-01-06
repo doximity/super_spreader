@@ -46,13 +46,11 @@ module SuperSpreader
 
     def schedule
       @schedule ||=
-        begin
-          PeakSchedule.new(
-            on_peak_wday_range: on_peak_wday_begin..on_peak_wday_end,
-            on_peak_hour_range: on_peak_hour_begin..on_peak_hour_end,
-            timezone: on_peak_timezone
-          )
-        end
+        PeakSchedule.new(
+          on_peak_wday_range: on_peak_wday_begin..on_peak_wday_end,
+          on_peak_hour_range: on_peak_hour_begin..on_peak_hour_end,
+          timezone: on_peak_timezone
+        )
     end
   end
 end

@@ -36,7 +36,7 @@ module SuperSpreader
     end
 
     # Primarily for factory_bot
-    alias save! save
+    alias_method :save!, :save
 
     private
 

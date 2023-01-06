@@ -22,7 +22,7 @@ module SuperSpreader
         # Use floor to prevent subsecond times
         run_at = begin_at + time_index.floor
         begin_id = clamp(end_id - batch_size + 1)
-        batches << { run_at: run_at, begin_id: begin_id, end_id: end_id }
+        batches << {run_at: run_at, begin_id: begin_id, end_id: end_id}
 
         break if begin_id == 1
 
@@ -40,9 +40,9 @@ module SuperSpreader
       batches = spread(**opts.merge(initial_id: initial_id))
 
       batches.each do |batch|
-        @job_class.
-          set(wait_until: batch[:run_at]).
-          perform_later(batch[:begin_id], batch[:end_id])
+        @job_class
+          .set(wait_until: batch[:run_at])
+          .perform_later(batch[:begin_id], batch[:end_id])
       end
 
       last_begin_id = batches.last[:begin_id]
@@ -55,7 +55,7 @@ module SuperSpreader
     private
 
     def clamp(value)
-      value <= 0 ? 1 : value
+      (value <= 0) ? 1 : value
     end
   end
 end

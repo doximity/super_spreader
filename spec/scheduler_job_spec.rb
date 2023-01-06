@@ -19,11 +19,11 @@ RSpec.describe SuperSpreader::SchedulerJob do
 
     it "does nothing if there are no records" do
       create(:scheduler_config,
-             batch_size: 80,
-             duration: 3600,
-             per_second_on_peak: 3,
-             per_second_off_peak: 3,
-             job_class_name: "ExampleJob")
+        batch_size: 80,
+        duration: 3600,
+        per_second_on_peak: 3,
+        per_second_off_peak: 3,
+        job_class_name: "ExampleJob")
 
       travel_to(Time.new(2020, 12, 16, 0, 0, 0, 0)) do
         log = capture_log do
@@ -43,11 +43,11 @@ RSpec.describe SuperSpreader::SchedulerJob do
     it "enqueues reencrypt jobs as configured" do
       ExampleModelClass.create
       create(:scheduler_config,
-             batch_size: 80,
-             duration: 3600,
-             per_second_on_peak: 3,
-             per_second_off_peak: 3,
-             job_class_name: "ExampleJob")
+        batch_size: 80,
+        duration: 3600,
+        per_second_on_peak: 3,
+        per_second_off_peak: 3,
+        job_class_name: "ExampleJob")
 
       travel_to(Time.new(2020, 12, 16, 0, 0, 0, 0)) do
         log = capture_log do
@@ -68,11 +68,11 @@ RSpec.describe SuperSpreader::SchedulerJob do
       next_model = ExampleModelClass.create
       ExampleModelClass.create
       create(:scheduler_config,
-             batch_size: 1,
-             duration: 1,
-             per_second_on_peak: 1,
-             per_second_off_peak: 1,
-             job_class_name: "ExampleJob")
+        batch_size: 1,
+        duration: 1,
+        per_second_on_peak: 1,
+        per_second_off_peak: 1,
+        job_class_name: "ExampleJob")
 
       travel_to(Time.new(2020, 12, 16, 0, 0, 0, 0)) do
         log = capture_log do
