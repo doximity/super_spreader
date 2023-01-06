@@ -121,7 +121,7 @@ RSpec.describe SuperSpreader::Spreader do
   end
 
   it "does not enqueue if initial_id is 0" do
-    spread_tracker = FakeSpreadTracker.new(0)
+    spread_tracker = instance_double(FakeSpreadTracker, initial_id: 0)
     super_spreader = described_class.new(FakeJob, FakeModel, spread_tracker: spread_tracker)
 
     next_id = super_spreader.enqueue_spread(batch_size: 2, duration: 3, per_second: 1)
