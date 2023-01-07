@@ -10,6 +10,10 @@ require "factory_bot"
 require "pry"
 require "rspec/rails/matchers"
 
+require "support/create_example_models_table"
+require "support/example_model"
+
+require "factories/example_model"
 require "factories/scheduler_config"
 
 RSpec.configure do |config|
@@ -36,6 +40,17 @@ RSpec.configure do |config|
   end
 
   config.before do
+    # TODO: This is unnecessary in many specs.  If that becomes a noticeable
+    # slowdown, consider options to only set up ActiveRecord when needed.
+    ActiveRecord::Base.establish_connection(
+      adapter: "sqlite3",
+      database: ":memory:" # https://www.sqlite.org/inmemorydb.html
+    )
+
+    ActiveRecord::Migration.suppress_messages do
+      CreateExampleModelsTable.migrate(:up)
+    end
+
     SuperSpreader.redis.flushall
   end
 
