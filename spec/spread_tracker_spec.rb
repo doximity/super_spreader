@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "active_job"
 require "spec_helper"
+require "support/fakes"
 
 RSpec.describe SuperSpreader::SpreadTracker do
   it "has a default initial_id" do
@@ -52,23 +52,5 @@ RSpec.describe SuperSpreader::SpreadTracker do
 
   def build_spread_tracker
     described_class.new(FakeJob, FakeModel)
-  end
-
-  class FakeJob < ActiveJob::Base
-  end
-
-  class OtherFakeJob < ActiveJob::Base
-  end
-
-  class FakeModel
-    def self.maximum(*)
-      100
-    end
-  end
-
-  class OtherFakeModel
-    def self.maximum(*)
-      200
-    end
   end
 end
