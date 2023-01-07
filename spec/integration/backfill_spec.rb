@@ -4,6 +4,7 @@ require "active_job"
 require "spec_helper"
 require "support/create_example_models_table"
 require "support/example_model"
+require "support/example_backfill_job"
 require "support/log_spec_helper"
 require "factories/example_model"
 
@@ -117,24 +118,6 @@ RSpec.describe "Integration" do
     unprocessed_models = ExampleModel.where(id: 501..1000)
     expect(unprocessed_models.length).to eq(500)
     expect(unprocessed_models.all? { |m| m.example_attribute.present? }).to eq(false)
-  end
-
-  class ExampleBackfillJob < ActiveJob::Base
-    extend SuperSpreader::StopSignal
-
-    def self.model_class
-      ExampleModel
-    end
-
-    def perform(begin_id, end_id)
-      return if self.class.stopped?
-
-      # In a real application, this section would make use of the appropriate,
-      # efficient database queries.
-      ExampleModel.where(id: begin_id..end_id).each do |example_model|
-        example_model.update(example_attribute: "example value")
-      end
-    end
   end
 
   describe ExampleBackfillJob do
