@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "active_job"
 require "spec_helper"
+require "support/fakes"
 
 RSpec.describe SuperSpreader::Spreader do
   it "has a default begin_at value" do
@@ -161,12 +161,4 @@ RSpec.describe SuperSpreader::Spreader do
   def spread(...)
     described_class.new(FakeJob, FakeModel).spread(...)
   end
-
-  class FakeJob < ActiveJob::Base
-  end
-
-  class FakeModel
-  end
-
-  FakeSpreadTracker = Struct.new(:initial_id)
 end
