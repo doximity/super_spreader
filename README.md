@@ -14,6 +14,8 @@ This tool is built to backfill many millions of records in a resource-efficient 
 
 **Please be aware:** SuperSpreader is still fairly early in development.  While it can be used effecively by experienced hands, we are aware that it could have a better developer experience (DevX).  It was written to solve a specific problem (see "History").  We are working to generalize the tool as the need arises.  Pull requests are welcome!
 
+Please also see "Roadmap" for other known limitations that may be relevant to you.
+
 ## History
 
 SuperSpreader was originally written to re-encrypt the Dialer database, a key component of Doximity's telehealth offerings.  Without SuperSpreader, it would have taken several months to handle many millions of records using a Key Management Service (KMS) that adds an overhead of 11 ms per record.  Using SuperSpreader took the time to backfill down to a couple of weeks.  This massive backfill happened safely during very high Dialer usage during the winter of 2020.  Of course, the name came from the coronavirus pandemic, which had a number of super-spreader events in the news around the same time.  Rather than spreading disease, the SuperSpreader gem spreads out telehealth background jobs to support the healthcare professionals that fight disease.
@@ -27,6 +29,16 @@ SuperSpreader was built for backfills.  If you need to touch every record and yo
 That said, it's **not** common to need a tool like SuperSpreader.  Many backfills are better handled through SQL or Rake tasks.  SuperSpreader should only be used when the additional complexity is warranted.  Before using a shiny tool, **please stop and consider the tradeoffs**.
 
 The primary criterion to consider is whether the backfill in question is _long-running_.  If you estimate it would take at least a couple of days to complete, it makes sense to consider SuperSpreader.  Another good reason to consider this tool is _code reuse_.  If you already have Ruby-land code that would be difficult or impossible to replicate in SQL, it makes sense to use SuperSpreader, assuming the equivalent Rake task would be impractical.
+
+## How do I use it?
+
+TODO
+
+## Roadmap
+
+#### Allow for multiple concurrent backfills
+
+Currently, SuperSpreader can only backfill using a single scheduler.  This means that only one backfill can run at a given time, which requires coordination amongst engineers.  The scheduler and configuration needs to be changed to allow for multiple concurrent backfills.
 
 ## Installation
 
