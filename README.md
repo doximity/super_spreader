@@ -20,6 +20,14 @@ SuperSpreader was originally written to re-encrypt the Dialer database, a key co
 
 Since that time, our team has started to use SuperSpreader in many other situations.  Our hope is that other teams, internal and external, can use it if they have similar problems to solve.
 
+## When should I use it?
+
+SuperSpreader was built for backfills.  If you need to touch every record and you have _a lot_ of records, it may be a good fit.
+
+That said, it's **not** common to need a tool like SuperSpreader.  Many backfills are better handled through SQL or Rake tasks.  SuperSpreader should only be used when the additional complexity is warranted.  Before using a shiny tool, **please stop and consider the tradeoffs**.
+
+The primary criterion to consider is whether the backfill in question is _long-running_.  If you estimate it would take at least a couple of days to complete, it makes sense to consider SuperSpreader.  Another good reason to consider this tool is _code reuse_.  If you already have Ruby-land code that would be difficult or impossible to replicate in SQL, it makes sense to use SuperSpreader, assuming the equivalent Rake task would be impractical.
+
 ## Installation
 
 Add this line to your application's Gemfile:
