@@ -30,6 +30,8 @@ That said, it's **not** common to need a tool like SuperSpreader.  Many backfill
 
 The primary criterion to consider is whether the backfill in question is _long-running_.  If you estimate it would take at least a couple of days to complete, it makes sense to consider SuperSpreader.  Another good reason to consider this tool is _code reuse_.  If you already have Ruby-land code that would be difficult or impossible to replicate in SQL, it makes sense to use SuperSpreader, assuming the equivalent Rake task would be impractical.
 
+## How does it work?
+
 ## How do I use it?
 
 TODO
