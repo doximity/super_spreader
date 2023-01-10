@@ -1,8 +1,14 @@
 # SuperSpreader
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/super_spreader`. To experiment with that code, run `bin/console` for an interactive prompt.
+SuperSpreader is a library for massive, memory- and compute-efficient backfills of ActiveRecord models using ActiveJob.
 
-TODO: Delete this and the text above, and describe your gem
+This tool is built to backfill many millions of records in a resource-efficient way.  When paired with a properly written job, it can drastically reduce the wall time of a backfill through parallelization.  Jobs are enqueued in small batches so that the ActiveJob backend is not overwhelmed and can be stopped at a moment's notice, if needed.
+
+## Example use cases
+
+- Re-encrypt data
+- Make API calls to fill in missing data
+- Restructuring complex data
 
 ## Installation
 
