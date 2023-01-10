@@ -10,6 +10,10 @@ This tool is built to backfill many millions of records in a resource-efficient 
 - Make API calls to fill in missing data
 - Restructuring complex data
 
+## Warnings
+
+**Please be aware:** SuperSpreader is still fairly early in development.  While it can be used effecively by experienced hands, we are aware that it could have a better developer experience (DevX).  It was written to solve a specific problem (see "History").  We are working to generalize the tool as the need arises.  Pull requests are welcome!
+
 ## History
 
 SuperSpreader was originally written to re-encrypt the Dialer database, a key component of Doximity's telehealth offerings.  Without SuperSpreader, it would have taken several months to handle many millions of records using a Key Management Service (KMS) that adds an overhead of 11 ms per record.  Using SuperSpreader took the time to backfill down to a couple of weeks.  This massive backfill happened safely during very high Dialer usage during the winter of 2020.  Of course, the name came from the coronavirus pandemic, which had a number of super-spreader events in the news around the same time.  Rather than spreading disease, the SuperSpreader gem spreads out telehealth background jobs to support the healthcare professionals that fight disease.
