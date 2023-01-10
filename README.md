@@ -2,13 +2,19 @@
 
 SuperSpreader is a library for massive, memory- and compute-efficient backfills of ActiveRecord models using ActiveJob.
 
-This tool is built to backfill many millions of records in a resource-efficient way.  When paired with a properly written job, it can drastically reduce the wall time of a backfill through parallelization.  Jobs are enqueued in small batches so that the ActiveJob backend is not overwhelmed and can be stopped at a moment's notice, if needed.
+This tool is built to backfill many millions of records in a resource-efficient way.  When paired with a properly written job, it can drastically reduce the wall time of a backfill through parallelization.  Jobs are enqueued in small batches so that the ActiveJob backend is not overwhelmed.  These jobs can also be stopped at a moment's notice, if needed.
 
 ## Example use cases
 
 - Re-encrypt data
 - Make API calls to fill in missing data
 - Restructuring complex data
+
+## History
+
+SuperSpreader was originally written to re-encrypt the Dialer database, a key component of Doximity's telehealth offerings.  Without SuperSpreader, it would have taken several months to handle many millions of records using a Key Management Service (KMS) that adds an overhead of 11 ms per record.  Using SuperSpreader took the time to backfill down to a couple of weeks.  This massive backfill happened safely during very high Dialer usage during the winter of 2020.  Of course, the name came from the coronavirus pandemic, which had a number of super-spreader events in the news around the same time.  Rather than spreading disease, the SuperSpreader gem spreads out telehealth background jobs to support the healthcare professionals that fight disease.
+
+Since that time, our team has started to use SuperSpreader in many other situations.  Our hope is that other teams, internal and external, can use it if they have similar problems to solve.
 
 ## Installation
 
