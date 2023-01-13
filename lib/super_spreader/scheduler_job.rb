@@ -17,7 +17,7 @@ module SuperSpreader
       log(config.serializable_hash)
 
       super_spreader = Spreader.new(*config.super_spreader_config)
-      next_id = super_spreader.enqueue_spread(config.spread_options)
+      next_id = super_spreader.enqueue_spread(**config.spread_options)
       log(next_id: next_id)
 
       return if next_id.zero?
