@@ -1,0 +1,16 @@
+current directory: /work/gems/super_spreader/vendor/bundle/ruby/3.1.0/gems/json-2.6.3/ext/json
+/home/edeborba/.rbenv/versions/3.1.2/bin/ruby -I /home/edeborba/.rbenv/versions/3.1.2/lib/ruby/site_ruby/3.1.0 extconf.rb
+creating Makefile
+
+current directory: /work/gems/super_spreader/vendor/bundle/ruby/3.1.0/gems/json-2.6.3/ext/json
+make DESTDIR\= sitearchdir\=./.gem.20230113-29803-qx5chl sitelibdir\=./.gem.20230113-29803-qx5chl clean
+
+current directory: /work/gems/super_spreader/vendor/bundle/ruby/3.1.0/gems/json-2.6.3/ext/json
+make DESTDIR\= sitearchdir\=./.gem.20230113-29803-qx5chl sitelibdir\=./.gem.20230113-29803-qx5chl
+make: Nothing to be done for 'all'.
+
+current directory: /work/gems/super_spreader/vendor/bundle/ruby/3.1.0/gems/json-2.6.3/ext/json
+make DESTDIR\= sitearchdir\=./.gem.20230113-29803-qx5chl sitelibdir\=./.gem.20230113-29803-qx5chl install
+
+current directory: /work/gems/super_spreader/vendor/bundle/ruby/3.1.0/gems/json-2.6.3/ext/json
+make DESTDIR\= sitearchdir\=./.gem.20230113-29803-qx5chl sitelibdir\=./.gem.20230113-29803-qx5chl clean
