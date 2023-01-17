@@ -75,7 +75,6 @@ jobs:
           command: bundle exec rspec
 
 workflows:
-  version: 3
   trunk:
     jobs:
       - build:
