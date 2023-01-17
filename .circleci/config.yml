@@ -51,7 +51,7 @@ jobs:
   build:
     parameters:
       executor:
-        type: string
+        type: executor
         default: ruby_3_1
     executor: "<< parameters.executor >>"
     steps:
