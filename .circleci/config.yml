@@ -27,6 +27,14 @@ executors:
           BUNDLE_VERSION: '~> 2.4.3'
       - image: redis:6
 
+  ruby_3_2:
+    resource_class: small
+    docker:
+      - image: cimg/ruby:3.2
+        environment:
+          BUNDLE_VERSION: '~> 2.4.3'
+      - image: redis:6
+
 # yaml anchor filters
 master_only: &master_only
   filters:
@@ -52,7 +60,7 @@ jobs:
     parameters:
       executor:
         type: string
-        default: ruby_3_1
+        default: ruby_3_2
     executor: "<< parameters.executor >>"
     steps:
       - checkout
@@ -83,10 +91,10 @@ workflows:
           <<: *master_only
           matrix:
             parameters:
-              executor: [ruby_2_7, ruby_3_0, ruby_3_1]
+              executor: [ruby_2_7, ruby_3_0, ruby_3_1, ruby_3_2]
       - gem/build:
           <<: *master_only
-          executor: ruby_3_1
+          executor: ruby_3_2
           name: gem-build
           requires:
             - build
@@ -97,10 +105,10 @@ workflows:
           <<: *pr_only
           matrix:
             parameters:
-              executor: [ruby_2_7, ruby_3_0, ruby_3_1]
+              executor: [ruby_2_7, ruby_3_0, ruby_3_1, ruby_3_2]
       - gem/build:
           <<: *pr_only
-          executor: ruby_3_1
+          executor: ruby_3_2
           name: gem-build
           vendor-cache: false
           requires:
@@ -126,10 +134,10 @@ workflows:
           <<: *version_tags_only
           matrix:
             parameters:
-              executor: [ruby_2_7, ruby_3_0, ruby_3_1]
+              executor: [ruby_2_7, ruby_3_0, ruby_3_1, ruby_3_2]
       - gem/build:
           <<: *version_tags_only
-          executor: ruby_3_1
+          executor: ruby_3_2
           name: gem-build
           vendor-cache: false
           requires:
