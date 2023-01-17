@@ -51,8 +51,8 @@ jobs:
   build:
     parameters:
       executor:
-        type: executor
-        default: ruby_3_1
+        type: string
+        default: "ruby_3_1"
     executor: "<< parameters.executor >>"
     steps:
       - checkout
@@ -82,7 +82,7 @@ workflows:
         <<: *master_only
         matrix:
           parameters:
-            executor: [ruby_2_7, ruby_3_0, ruby_3_1]
+            executor: ["ruby_2_7", "ruby_3_0", "ruby_3_1"]
       - gem/build:
           <<: *master_only
           executor: ruby_3_1
@@ -96,7 +96,7 @@ workflows:
         <<: *pr_only
         matrix:
           parameters:
-            executor: [ruby_2_7, ruby_3_0, ruby_3_1]
+            executor: ["ruby_2_7", "ruby_3_0", "ruby_3_1"]
       - gem/build:
           <<: *pr_only
           executor: ruby_3_1
@@ -125,7 +125,7 @@ workflows:
         <<: *version_tags_only
         matrix:
           parameters:
-            executor: [ruby_2_7, ruby_3_0, ruby_3_1]
+            executor: ["ruby_2_7", "ruby_3_0", "ruby_3_1"]
       - gem/build:
           <<: *version_tags_only
           executor: ruby_3_1
