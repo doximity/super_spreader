@@ -4,15 +4,6 @@ orbs:
   gem: doximity/gem-publisher@0
 
 executors:
-  # used for building the gem
-  ruby-latest:
-    resource_class: small
-    docker:
-      - image: cimg/ruby:3.1
-        environment:
-          BUNDLE_VERSION: '~> 2.4.3'
-
-  # used for testing the gem:
   ruby_2_7:
     resource_class: small
     docker:
@@ -57,8 +48,12 @@ version_tags_only: &version_tags_only
       only: /^v.*/
 
 jobs:
-  build_2_7:
-    executor: ruby_2_7
+  build:
+    parameters:
+      executor:
+        type: string
+        default: ruby_3_1
+    executor: "<< parameters.executor >>"
     steps:
       - checkout
       - run:
@@ -67,104 +62,54 @@ jobs:
             gem install bundler --version "${BUNDLE_VERSION}" --force
       - restore_cache:
           keys:
-            - v3-bundle-ruby_2_7-{{ checksum "Gemfile.lock" }}
+            - v1-bundle-<< parameters.executor >>-{{ checksum "Gemfile.lock" }}
       - run:
           name: Install Ruby Dependencies
           command: bundle check --path=vendor/bundle || bundle install
       - save_cache:
-          key: v3-bundle-ruby_2_7-{{ checksum "Gemfile.lock" }}
+          key: v1-bundle-<< parameters.executor >>-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
       - run:
           name: Run Tests
           command: bundle exec rspec
-      - persist_to_workspace:
-          root: .
-          paths:
-            - vendor/bundle
-  build_3_0:
-    executor: ruby_3_0
-    steps:
-      - checkout
-      - run:
-          name: Install Bundler specific version
-          command: |
-            gem install bundler --version "${BUNDLE_VERSION}" --force
-      - restore_cache:
-          keys:
-            - v3-bundle-ruby_3_0-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Install Ruby Dependencies
-          command: bundle check --path=vendor/bundle || bundle install
-      - save_cache:
-          key: v3-bundle-ruby_3_0-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-      - run:
-          name: Run Tests
-          command: bundle exec rspec
-      - persist_to_workspace:
-          root: .
-          paths:
-            - vendor/bundle
-
-  build_3_1:
-    executor: ruby_3_1
-    steps:
-      - checkout
-      - run:
-          name: Install Bundler specific version
-          command: |
-            gem install bundler --version "${BUNDLE_VERSION}" --force
-      - restore_cache:
-          keys:
-            - v3-bundle-ruby_3_1-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Install Ruby Dependencies
-          command: bundle check --path=vendor/bundle || bundle install
-      - save_cache:
-          key: v3-bundle-ruby_3_1-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-      - run:
-          name: Run Tests
-          command: bundle exec rspec
-      - persist_to_workspace:
-          root: .
-          paths:
-            - vendor/bundle
 
 workflows:
-  version: 2
+  version: 1
   trunk:
     jobs:
-      - build_2_7:
-          <<: *master_only
-      - build_3_0:
-          <<: *master_only
-      - build_3_1:
-          <<: *master_only
+      - build:
+        <<: *master_only
+        matrix:
+          parameters:
+            executor:
+              - ruby_2_7
+              - ruby_3_0
+              - ruby_3_1
       - gem/build:
           <<: *master_only
-          executor: ruby-latest
+          executor: ruby_3_1
           name: gem-build
           requires:
-            - build_3_1
+            - build
 
   pull-requests:
     jobs:
-      - build_2_7:
-          <<: *pr_only
-      - build_3_0:
-          <<: *pr_only
-      - build_3_1:
-          <<: *pr_only
+      - build:
+        <<: *pr_only
+        matrix:
+          parameters:
+            executor:
+              - ruby_2_7
+              - ruby_3_0
+              - ruby_3_1
       - gem/build:
           <<: *pr_only
-          executor: ruby-latest
+          executor: ruby_3_1
           name: gem-build
+          vendor-cache: false
           requires:
-            - build_3_1
+            - build
       - pre-release-approval:
           <<: *pr_only
           type: approval
@@ -182,18 +127,21 @@ workflows:
 
   final-release:
     jobs:
-      - build_2_7:
-          <<: *version_tags_only
-      - build_3_0:
-          <<: *version_tags_only
-      - build_3_1:
-          <<: *version_tags_only
+      - build:
+        <<: *version_tags_only
+        matrix:
+          parameters:
+            executor:
+              - ruby_2_7
+              - ruby_3_0
+              - ruby_3_1
       - gem/build:
           <<: *version_tags_only
-          executor: ruby-latest
+          executor: ruby_3_1
           name: gem-build
+          vendor-cache: false
           requires:
-            - build_3_1
+            - build
       - gem/publish:
           <<: *version_tags_only
           name: gem-publish
