@@ -78,10 +78,10 @@ workflows:
   trunk:
     jobs:
       - build:
-        <<: *master_only
-        matrix:
-          parameters:
-            executor: ["ruby_2_7", "ruby_3_0", "ruby_3_1"]
+          <<: *master_only
+          matrix:
+            parameters:
+              executor: ["ruby_2_7", "ruby_3_0", "ruby_3_1"]
       - gem/build:
           <<: *master_only
           executor: ruby_3_1
@@ -92,10 +92,10 @@ workflows:
   pull-requests:
     jobs:
       - build:
-        <<: *pr_only
-        matrix:
-          parameters:
-            executor: ["ruby_2_7", "ruby_3_0", "ruby_3_1"]
+          <<: *pr_only
+          matrix:
+            parameters:
+              executor: ["ruby_2_7", "ruby_3_0", "ruby_3_1"]
       - gem/build:
           <<: *pr_only
           executor: ruby_3_1
@@ -121,10 +121,10 @@ workflows:
   final-release:
     jobs:
       - build:
-        <<: *version_tags_only
-        matrix:
-          parameters:
-            executor: ["ruby_2_7", "ruby_3_0", "ruby_3_1"]
+          <<: *version_tags_only
+          matrix:
+            parameters:
+              executor: ["ruby_2_7", "ruby_3_0", "ruby_3_1"]
       - gem/build:
           <<: *version_tags_only
           executor: ruby_3_1
