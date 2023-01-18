@@ -51,7 +51,7 @@ RSpec.describe "Integration" do
     # NOTE: There might be some extra runs of `SchedulerJob` at the end of the
     # log, but it's unclear whether that's because of `perform_enqueued_jobs`.
     # In any case, it's benign.
-    expect(log.lines.length).to eq(15)
+    expect(log.lines.length).to eq(7)
     example_backfill_models = ExampleModel.where(id: 1..1000)
     expect(example_backfill_models.length).to eq(1000)
     expect(example_backfill_models.all? { |m| m.example_attribute.present? }).to eq(true)
