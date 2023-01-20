@@ -79,7 +79,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 1. See [CONTRIBUTING.md](./CONTRIBUTING.md)
-2. Fork it ( https://github.com/[my-github-username]/elasticity/fork )
+2. Fork it ( https://github.com/doximity/super_spreader/fork )
 3. Create your feature branch (`git checkout -b my-new-feature`)
 4. Commit your changes (`git commit -am 'Add some feature'`)
 5. Push to the branch (`git push origin my-new-feature`)
