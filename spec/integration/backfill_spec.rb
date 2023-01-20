@@ -17,7 +17,11 @@ RSpec.describe "Integration" do
     config.duration = 10
     config.job_class_name = "ExampleBackfillJob"
 
-    config.per_second_on_peak = 3.0
+    # NOTE: In order to prevent flaky specs, these two values must be the same.
+    # Otherwise, the number of log messages will change depending on when the
+    # tests are run.  That's correct behavior, but not something we want to
+    # test for in this spec.
+    config.per_second_on_peak = 7.5
     config.per_second_off_peak = 7.5
 
     config.on_peak_timezone = "America/Los_Angeles"
@@ -39,7 +43,7 @@ RSpec.describe "Integration" do
         "on_peak_wday_begin" => 1,
         "on_peak_wday_end" => 5,
         "per_second_off_peak" => 7.5,
-        "per_second_on_peak" => 3.0
+        "per_second_on_peak" => 7.5
       })
 
     log = capture_log do
