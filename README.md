@@ -18,7 +18,7 @@ Please also see "Roadmap" for other known limitations that may be relevant to yo
 
 ## History
 
-SuperSpreader was originally written to re-encrypt the Dialer database, a key component of Doximity's telehealth offerings.  Without SuperSpreader, it would have taken several months to handle many millions of records using a Key Management Service (KMS) that adds an overhead of 11 ms per record.  Using SuperSpreader took the time to backfill down to a couple of weeks.  This massive backfill happened safely during very high Dialer usage during the winter of 2020.  Of course, the name came from the coronavirus pandemic, which had a number of super-spreader events in the news around the same time.  Rather than spreading disease, the SuperSpreader gem spreads out telehealth background jobs to support the healthcare professionals that fight disease.
+SuperSpreader was originally written to re-encrypt the Dialer database, a key component of Doximity's telehealth offerings.  Without SuperSpreader, it would have taken **several months** to handle many millions of records using a Key Management Service (KMS) that adds an overhead of 11 ms per record.  Using SuperSpreader took the time to backfill down to a couple of weeks.  This massive backfill happened safely during very high Dialer usage during the winter of 2020.  Of course, the name came from the coronavirus pandemic, which had a number of super-spreader events in the news around the same time.  Rather than spreading disease, the SuperSpreader gem spreads out telehealth background jobs to support the healthcare professionals that fight disease.
 
 Since that time, our team has started to use SuperSpreader in many other situations.  Our hope is that other teams, internal and external, can use it if they have similar problems to solve.
 
@@ -31,6 +31,42 @@ That said, it's **not** common to need a tool like SuperSpreader.  Many backfill
 The primary criterion to consider is whether the backfill in question is _long-running_.  If you estimate it would take at least a couple of days to complete, it makes sense to consider SuperSpreader.  Another good reason to consider this tool is _code reuse_.  If you already have Ruby-land code that would be difficult or impossible to replicate in SQL, it makes sense to use SuperSpreader, assuming the equivalent Rake task would be impractical.
 
 ## How does it work?
+
+SuperSpreader enqueues a configurable number of background jobs on a set schedule.  These background jobs are executed in small batches such that only a small number of jobs are enqueued at any given time.  The jobs start at the most recent record and work back to the first record, based on the auto-incrementing primary key.
+
+The configuration is able to be tuned for the needs of an individual problem.  If the backfill would require months of compute time, it can be run in parallel so that it takes much less time.  The resource utilization can be spread out so that shared resources, such as a database, are not overwhelmed with requests.  Finally, there is also support for running more jobs during off-peak usage based on a schedule.
+
+Backfills are implemented using ActiveJob classes.  SuperSpreader orchestrates running those jobs.  Each set of jobs is enqueued by a scheduler using the supplied configuration.
+
+As an example, assume that there's a table with 100,000,000 rows which need Ruby-land logic to be applied using `MyBackfillJob`.  The rate (e.g., how many jobs per second) is configurable.  Once configured, SuperSpreader would enqueue job in batches like:
+
+    MyBackfillJob run_at: "2020-11-16T22:51:59Z", begin_id: 99_999_901, end_id: 100_000_000
+    MyBackfillJob run_at: "2020-11-16T22:51:59Z", begin_id: 99_999_801, end_id:  99_999_900
+    MyBackfillJob run_at: "2020-11-16T22:51:59Z", begin_id: 99_999_701, end_id:  99_999_800
+    MyBackfillJob run_at: "2020-11-16T22:52:00Z", begin_id: 99_999_601, end_id:  99_999_700
+    MyBackfillJob run_at: "2020-11-16T22:52:00Z", begin_id: 99_999_501, end_id:  99_999_600
+    MyBackfillJob run_at: "2020-11-16T22:52:00Z", begin_id: 99_999_401, end_id:  99_999_500
+
+Notice that there are 3 jobs per second, 2 seconds of work were enqueued, and the batch size is 100.  Again, this is just an example for illustration, and the configuration can be modified to suit the needs of the problem.
+
+After running out of work, SuperSpreader will enqueue more work:
+
+    SuperScheduler::SchedulerJob run_at: "2020-11-16T22:52:01Z"
+
+And the work continues:
+
+    MyBackfillJob run_at: "2020-11-16T22:52:01Z", begin_id: 99_999_401, end_id:  99_999_500
+    MyBackfillJob run_at: "2020-11-16T22:52:01Z", begin_id: 99_999_301, end_id:  99_999_400
+    MyBackfillJob run_at: "2020-11-16T22:52:01Z", begin_id: 99_999_201, end_id:  99_999_300
+    MyBackfillJob run_at: "2020-11-16T22:52:02Z", begin_id: 99_999_101, end_id:  99_999_200
+    MyBackfillJob run_at: "2020-11-16T22:52:02Z", begin_id: 99_999_001, end_id:  99_999_100
+    MyBackfillJob run_at: "2020-11-16T22:52:02Z", begin_id: 99_998_901, end_id:  99_999_000
+
+This process continues until there is no more work to be done.
+
+Additionally, the configuration can be tuned while SuperSpreader is running.  The configuration is read each time `SchedulerJob` runs.  Does the process need to go faster?  Increase the number of jobs per second.  Are batches taking too long to complete?  Decrease the batch size.  Is `SchedulerJob` taking a long time to complete?  Decrease the duration so that less work is enqueued in each cycle.  Finally, SuperSpreader can be stopped instantly and resumed at a later time, if a need ever arises.
+
+As it stands, each run of SuperSpreader is hand-tuned.  It is highly recommended that SuperSpreader resource utilization is monitored during runs.  That said, it is designed to run autonomously once a good configuration is found.
 
 ## How do I use it?
 
