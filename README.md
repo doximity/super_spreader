@@ -76,21 +76,9 @@ To repeat an earlier disclaimer:
 
 The basic workflow is tested in `spec/integration/backfill_spec.rb`.
 
-## Roadmap
-
-#### Monitoring
-
-TODO
-
-#### Allow for multiple concurrent backfills
-
-Currently, SuperSpreader can only backfill using a single scheduler.  This means that only one backfill can run at a given time, which requires coordination amongst engineers.  The scheduler and configuration needs to be changed to allow for multiple concurrent backfills.
-
-#### Automated tuning based on backpressure
-
-TODO
-
 ## Installation
+
+If you've gotten this far and think SuperSpreader is a good fit for your problem, these are the instructions for installing it.
 
 Add this line to your application's Gemfile:
 
@@ -117,9 +105,19 @@ SuperSpreader.logger = Rails.logger
 SuperSpreader.redis = Redis.new(url: ENV["REDIS_URL"])
 ```
 
-## Usage
+## Roadmap
 
-TODO: Write usage instructions here
+#### Monitoring
+
+TODO
+
+#### Allow for multiple concurrent backfills
+
+Currently, SuperSpreader can only backfill using a single scheduler.  This means that only one backfill can run at a given time, which requires coordination amongst engineers.  The scheduler and configuration needs to be changed to allow for multiple concurrent backfills.
+
+#### Automated tuning based on backpressure
+
+TODO
 
 ## Development
 
