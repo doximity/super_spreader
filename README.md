@@ -70,6 +70,17 @@ Or install it yourself as:
 
     $ gem install super_spreader
 
+SuperSpreader requires an ActiveRecord-compatible database, an ActiveJob-compatible job runner, and Redis for bookkeeping.
+
+For Rails, please set up SuperSpreader using an initializer:
+
+```ruby
+# config/initializers/super_spreader.rb
+
+SuperSpreader.logger = Rails.logger
+SuperSpreader.redis = Redis.new(url: ENV["REDIS_URL"])
+```
+
 ## Usage
 
 TODO: Write usage instructions here
