@@ -34,7 +34,11 @@ The primary criterion to consider is whether the backfill in question is _long-r
 
 ## How do I use it?
 
-TODO
+To repeat an earlier disclaimer:
+
+> **Please be aware:** SuperSpreader is still fairly early in development.  While it can be used effecively by experienced hands, we are aware that it could have a better developer experience (DevX).  It was written to solve a specific problem (see "History").  We are working to generalize the tool as the need arises.  Pull requests are welcome!
+
+The basic workflow is tested in `spec/integration/backfill_spec.rb`.
 
 ## Roadmap
 
