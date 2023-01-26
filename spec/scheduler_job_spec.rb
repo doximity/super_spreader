@@ -29,7 +29,7 @@ RSpec.describe SuperSpreader::SchedulerJob do
 
         expect(log).to eq(<<~LOG)
           {"subject":"SuperSpreader::SchedulerJob","started_at":"2020-12-16T00:00:00Z"}
-          {"subject":"SuperSpreader::SchedulerJob","batch_size":80,"duration":3600,"job_class_name":"ExampleBackfillJob","per_second_on_peak":3.0,"per_second_off_peak":3.0,"on_peak_timezone":"America/Los_Angeles","on_peak_hour_begin":5,"on_peak_hour_end":17,"on_peak_wday_begin":1,"on_peak_wday_end":5}
+          {"subject":"SuperSpreader::SchedulerJob","job_class_name":"ExampleBackfillJob","batch_size":80,"duration":3600,"per_second_on_peak":3.0,"per_second_off_peak":3.0,"on_peak_timezone":"America/Los_Angeles","on_peak_hour_begin":5,"on_peak_hour_end":17,"on_peak_wday_begin":1,"on_peak_wday_end":5}
           {"subject":"SuperSpreader::SchedulerJob","next_id":0}
         LOG
 
@@ -53,7 +53,7 @@ RSpec.describe SuperSpreader::SchedulerJob do
 
         expect(log).to eq(<<~LOG)
           {"subject":"SuperSpreader::SchedulerJob","started_at":"2020-12-16T00:00:00Z"}
-          {"subject":"SuperSpreader::SchedulerJob","batch_size":80,"duration":3600,"job_class_name":"ExampleBackfillJob","per_second_on_peak":3.0,"per_second_off_peak":3.0,"on_peak_timezone":"America/Los_Angeles","on_peak_hour_begin":5,"on_peak_hour_end":17,"on_peak_wday_begin":1,"on_peak_wday_end":5}
+          {"subject":"SuperSpreader::SchedulerJob","job_class_name":"ExampleBackfillJob","batch_size":80,"duration":3600,"per_second_on_peak":3.0,"per_second_off_peak":3.0,"on_peak_timezone":"America/Los_Angeles","on_peak_hour_begin":5,"on_peak_hour_end":17,"on_peak_wday_begin":1,"on_peak_wday_end":5}
           {"subject":"SuperSpreader::SchedulerJob","next_id":0}
         LOG
 
@@ -78,7 +78,7 @@ RSpec.describe SuperSpreader::SchedulerJob do
 
         expect(log).to eq(<<~LOG)
           {"subject":"SuperSpreader::SchedulerJob","started_at":"2020-12-16T00:00:00Z"}
-          {"subject":"SuperSpreader::SchedulerJob","batch_size":1,"duration":1,"job_class_name":"ExampleBackfillJob","per_second_on_peak":1.0,"per_second_off_peak":1.0,"on_peak_timezone":"America/Los_Angeles","on_peak_hour_begin":5,"on_peak_hour_end":17,"on_peak_wday_begin":1,"on_peak_wday_end":5}
+          {"subject":"SuperSpreader::SchedulerJob","job_class_name":"ExampleBackfillJob","batch_size":1,"duration":1,"per_second_on_peak":1.0,"per_second_off_peak":1.0,"on_peak_timezone":"America/Los_Angeles","on_peak_hour_begin":5,"on_peak_hour_end":17,"on_peak_wday_begin":1,"on_peak_wday_end":5}
           {"subject":"SuperSpreader::SchedulerJob","next_id":#{next_model.id}}
           {"subject":"SuperSpreader::SchedulerJob","next_run_at":"2020-12-16T00:00:01Z"}
         LOG
