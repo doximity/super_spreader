@@ -64,9 +64,15 @@ And the work continues:
 
 This process continues until there is no more work to be done.  For more detail, please see [Spreader](https://github.com/doximity/super_spreader/blob/master/lib/super_spreader/spreader.rb) and [its spec](https://github.com/doximity/super_spreader/blob/master/spec/spreader_spec.rb).
 
-Additionally, the configuration can be tuned while SuperSpreader is running.  The configuration is read each time `SchedulerJob` runs.  Does the process need to go faster?  Increase the number of jobs per second.  Are batches taking too long to complete?  Decrease the batch size.  Is `SchedulerJob` taking a long time to complete?  Decrease the duration so that less work is enqueued in each cycle.  Finally, SuperSpreader can be stopped instantly and resumed at a later time, if a need ever arises.
+Additionally, the configuration can be tuned while SuperSpreader is running.  The configuration is read each time `SchedulerJob` runs.  As it stands, each run of SuperSpreader is hand-tuned.  It is highly recommended that SuperSpreader resource utilization is monitored during runs.  That said, it is designed to run autonomously once a good configuration is found.
 
-As it stands, each run of SuperSpreader is hand-tuned.  It is highly recommended that SuperSpreader resource utilization is monitored during runs.  That said, it is designed to run autonomously once a good configuration is found.
+Example tuning:
+
+- Does the process need to go faster?  Increase the number of jobs per second.
+- Are batches taking too long to complete?  Decrease the batch size.
+- Is `SchedulerJob` taking a long time to complete?  Decrease the duration so that less work is enqueued in each cycle.
+
+Finally, SuperSpreader can be stopped instantly and resumed at a later time, if a need ever arises.
 
 ## How do I use it?
 
