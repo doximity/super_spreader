@@ -5,19 +5,42 @@ require "super_spreader/redis_model"
 
 module SuperSpreader
   class SchedulerConfig < RedisModel
-    attribute :batch_size, :integer
-    attribute :duration, :integer
+    # The job class to enqueue on each run of the scheduler.
     attribute :job_class_name, :string
+    # The number of records to process in each invocation of the job class.
+    attribute :batch_size, :integer
+    # The amount of work to enqueue, in seconds.
+    attribute :duration, :integer
 
+    # The number of jobs to enqueue per second, allowing for fractional amounts
+    # such as 1 job every other second using `0.5`.
     attribute :per_second_on_peak, :float
+    # The same as per_second_on_peak, but for times that are not identified as
+    # on-peak.
     attribute :per_second_off_peak, :float
 
-    # UTC crosses the date boundary in an inconvenient way, so allow specifying
-    # the timezone
+    # This section manages the definition "on peak."  Compare this terminology
+    # to bus or train schedules.
+
+    # The timezone to use for time calculations.
+    #
+    # Example: "America/Los_Angeles" for Pacific time
     attribute :on_peak_timezone, :string
+    # The 24-hour hour on which on-peak application usage starts.
+    #
+    # Example: 5 for 5 AM
     attribute :on_peak_hour_begin, :integer
+    # The 24-hour hour on which on-peak application usage ends.
+    #
+    # Example: 17 for 5 PM
     attribute :on_peak_hour_end, :integer
+    # The wday value on which on-peak application usage starts.
+    #
+    # Example: 1 for Monday
     attribute :on_peak_wday_begin, :integer
+    # The wday value on which on-peak application usage ends.
+    #
+    # Example: 5 for Friday
     attribute :on_peak_wday_end, :integer
 
     attr_writer :schedule
