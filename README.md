@@ -171,6 +171,16 @@ ExampleBackfillJob.stop!
 
 The jobs will still be present in the job runner, but will all execute instantly because of the early return as demonstrated in [the example job](https://github.com/doximity/super_spreader/blob/master/spec/support/example_backfill_job.rb).  After the last scheduler job, the process will be paused.
 
+### Restarting
+
+If you stop the jobs but you wish to restart them later, use the `go!` method and *then* call `SuperSpreader::SchedulerJob.perform_now`.  Otherwise, the jobs will not do any work.
+
+```ruby
+ExampleBackfillJob.go!
+SuperSpreader::SchedulerJob.go!
+SuperSpreader::SchedulerJob.perform_now
+```
+
 ## Installation
 
 If you've gotten this far and think SuperSpreader is a good fit for your problem, these are the instructions for installing it.
