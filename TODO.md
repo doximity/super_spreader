@@ -1,5 +1,4 @@
-- [ ] Rename `model_class` to include `super_spreader`
-- [ ] Either combine the fake models or use a real ActiveRecord class
+- [ ] Rename `model_class` to include the words `super_spreader` for clarity
 - [ ] Ensure Redis is set up
 
     if [ -v REDIS_URL ]; then
@@ -9,5 +8,4 @@
       exit 1
     fi
 
-- [ ] Test against Ruby 3
 - [ ] Test against Rails 7
