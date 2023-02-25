@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "super_spreader/version"
+require "super_spreader/migration_helper"
 require "super_spreader/peak_schedule"
 require "super_spreader/redis_model"
 require "super_spreader/scheduler_config"
