@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module SuperSpreader
+  # Methods in this module are suitable for use in Rails migrations.  It is
+  # expected that their interface will remain stable.  If breaking changes are
+  # introduced, a new module will be introduced so existing migrations will not
+  # be affected.
   module BatchHelper
     def batch_execute(table_name:, step_size:, &block)
       result = execute(<<~SQL).to_a.flatten
