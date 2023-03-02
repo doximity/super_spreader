@@ -42,4 +42,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec_junit_formatter"
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "standard"
+  spec.add_development_dependency "yard"
 end
