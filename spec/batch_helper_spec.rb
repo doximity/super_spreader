@@ -2,10 +2,10 @@
 
 require "spec_helper"
 
-RSpec.describe SuperSpreader::MigrationHelper do
+RSpec.describe SuperSpreader::BatchHelper do
   it "can backfill using an example migration" do
     example_backfill_migration = Class.new(ActiveRecord::Migration[6.1]) do
-      include SuperSpreader::MigrationHelper
+      include SuperSpreader::BatchHelper
 
       # See https://github.com/ankane/strong_migrations#backfilling-data
       disable_ddl_transaction!
