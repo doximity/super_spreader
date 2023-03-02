@@ -7,6 +7,9 @@ module SuperSpreader
   # be affected.
   module BatchHelper
     # Execute SQL in small batches for an entire table.
+    #
+    # @param table_name [String]
+    # @param step_size [Integer]
     def batch_execute(table_name:, step_size:, &block)
       result = execute(<<~SQL).to_a.flatten
         SELECT MIN(id) AS min_id, MAX(id) AS max_id FROM #{table_name}
