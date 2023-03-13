@@ -8,11 +8,14 @@ module SuperSpreader
   module BatchHelper
     # Execute SQL in small batches for an entire table.
     #
+    # It is assumed that the table has a primary key named +id+.
+    #
     # Recommendation for migrations: Use this in combination with +disable_ddl_transaction!+.  See also: https://github.com/ankane/strong_migrations#backfilling-data
     #
-    # @param table_name [String]
-    # @param step_size [Integer]
-    def batch_execute(table_name:, step_size:, &block)
+    # @param table_name [String] the name of the table
+    # @param step_size [Integer] how many records to process in each batch
+    # @yield [minimum_id, maximum_id] block that returns SQL to migrate records between minimum_id and maximum_id
+    def batch_execute(table_name:, step_size:)
       result = execute(<<~SQL).to_a.flatten
         SELECT MIN(id) AS min_id, MAX(id) AS max_id FROM #{table_name}
       SQL
