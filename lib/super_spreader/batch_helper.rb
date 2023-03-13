@@ -8,6 +8,8 @@ module SuperSpreader
   module BatchHelper
     # Execute SQL in small batches for an entire table.
     #
+    # Recommendation for migrations: Use this in combination with +disable_ddl_transaction!+.  See also: https://github.com/ankane/strong_migrations#backfilling-data
+    #
     # @param table_name [String]
     # @param step_size [Integer]
     def batch_execute(table_name:, step_size:, &block)
