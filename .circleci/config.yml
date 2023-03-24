@@ -10,14 +10,14 @@ executors:
       - image: cimg/ruby:2.7
         environment:
           BUNDLE_VERSION: '~> 2.4.3'
-      - image: redis:6
+      - image: redis:6.2
   ruby_3_0:
     resource_class: small
     docker:
       - image: cimg/ruby:3.0
         environment:
           BUNDLE_VERSION: '~> 2.4.3'
-      - image: redis:6
+      - image: redis:6.2
 
   ruby_3_1:
     resource_class: small
@@ -25,7 +25,7 @@ executors:
       - image: cimg/ruby:3.1
         environment:
           BUNDLE_VERSION: '~> 2.4.3'
-      - image: redis:6
+      - image: redis:6.2
 
   ruby_3_2:
     resource_class: small
@@ -33,7 +33,7 @@ executors:
       - image: cimg/ruby:3.2
         environment:
           BUNDLE_VERSION: '~> 2.4.3'
-      - image: redis:6
+      - image: redis:6.2
 
 # yaml anchor filters
 master_only: &master_only
