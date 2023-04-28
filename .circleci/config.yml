@@ -1,6 +1,20 @@
 version: 2.1
 
+ssm-context: &ssm-context
+  context: nexus_readonly
+  pre-steps:
+    - ssm-setup-env
+
+commands:
+  ssm-setup-env:
+    steps:
+      - aws-ssm-env/set:
+          env-mapping: >
+            ENV_VAR_NAME:/circleci-oidc/global/param
+            OTHER_VAR:/circleci-oidc/repo/<reponame>/otherparam
+
 orbs:
+  aws-ssm-env: doximity/aws-ssm-env@0
   gem: doximity/gem-publisher@0
 
 executors:
@@ -126,7 +140,7 @@ workflows:
           pre_release: true
           requires:
             - pre-release-approval
-          context: artifact_publishing
+          <<: *ssm-context
 
   final-release:
     jobs:
@@ -149,4 +163,4 @@ workflows:
           pre_release: false
           requires:
             - gem-build
-          context: artifact_publishing
+          <<: *ssm-context
