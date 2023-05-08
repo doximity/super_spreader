@@ -9,7 +9,7 @@ PATH
       redis (< 5)
 
 GEM
-  remote: https://rubygems.org/
+  remote: https://artifacts.dox.support/repository/gems/
   specs:
     actionpack (6.1.4.7)
       actionview (= 6.1.4.7)
