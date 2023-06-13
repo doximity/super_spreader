@@ -29,7 +29,7 @@ module SuperSpreader
       loop do
         sql = yield(lower_id, lower_id + step_size)
 
-        execute sql
+        execute(sql)
 
         lower_id += step_size
         break if lower_id > max_id
