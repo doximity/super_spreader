@@ -12,7 +12,8 @@ module SuperSpreader
     #
     # It is assumed that the table has a primary key named +id+.
     #
-    # Recommendation for migrations: Use this in combination with +disable_ddl_transaction!+.  See also: https://github.com/ankane/strong_migrations#backfilling-data
+    # Recommendation for migrations: Use this in combination with +disable_ddl_transaction!+.
+    # See also: https://github.com/ankane/strong_migrations#backfilling-data
     #
     # @param table_name [String] the name of the table
     # @param step_size [Integer] how many records to process in each batch
