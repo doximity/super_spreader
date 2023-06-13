@@ -4,13 +4,6 @@ orbs:
   gem: doximity/gem-publisher@0
 
 executors:
-  ruby_2_7:
-    resource_class: small
-    docker:
-      - image: cimg/ruby:2.7
-        environment:
-          BUNDLE_VERSION: '~> 2.4.3'
-      - image: redis:6.2
   ruby_3_0:
     resource_class: small
     docker:
@@ -91,7 +84,7 @@ workflows:
           <<: *master_only
           matrix:
             parameters:
-              executor: [ruby_2_7, ruby_3_0, ruby_3_1, ruby_3_2]
+              executor: [ruby_3_0, ruby_3_1, ruby_3_2]
       - gem/build:
           <<: *master_only
           executor: ruby_3_2
@@ -105,7 +98,7 @@ workflows:
           <<: *pr_only
           matrix:
             parameters:
-              executor: [ruby_2_7, ruby_3_0, ruby_3_1, ruby_3_2]
+              executor: [ruby_3_0, ruby_3_1, ruby_3_2]
       - gem/build:
           <<: *pr_only
           executor: ruby_3_2
@@ -134,7 +127,7 @@ workflows:
           <<: *version_tags_only
           matrix:
             parameters:
-              executor: [ruby_2_7, ruby_3_0, ruby_3_1, ruby_3_2]
+              executor: [ruby_3_0, ruby_3_1, ruby_3_2]
       - gem/build:
           <<: *version_tags_only
           executor: ruby_3_2
