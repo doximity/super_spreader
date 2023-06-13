@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "active_record"
 require "redis"
 
 module SuperSpreader

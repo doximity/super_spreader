@@ -4,7 +4,6 @@ require "bundler/setup"
 require "super_spreader"
 
 require "active_job/test_helper"
-require "active_record"
 require "active_support/testing/time_helpers"
 require "factory_bot"
 require "pry"
