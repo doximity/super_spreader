@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "active_record"
+
 module SuperSpreader
   # Methods in this module are suitable for use in Rails migrations.  It is
   # expected that their interface will remain stable.  If breaking changes are
