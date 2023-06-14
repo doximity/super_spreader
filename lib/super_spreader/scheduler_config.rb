@@ -50,7 +50,7 @@ module SuperSpreader
     end
 
     def super_spreader_config
-      [job_class, job_class.model_class]
+      [job_class, job_class.super_spreader_model_class]
     end
 
     def spread_options
