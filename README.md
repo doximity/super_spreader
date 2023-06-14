@@ -28,7 +28,7 @@ SuperSpreader was built for backfills.  If you need to touch every record and yo
 
 That said, it's **not** common to need a tool like SuperSpreader.  Many backfills are better handled through SQL or Rake tasks.  SuperSpreader should only be used when the additional complexity is warranted.  Before using a shiny tool, **please stop and consider the tradeoffs**.
 
-For some use cases, a pure-SQL migration or Rake task may be a better fit.  It may also make sense to use **both** background jobs and foreground task (Rails migration or Rake task).  (Consider the database size and number of instances between production and staging.)  For that, you might consider [SuperSpreader::MigrationHelper](https://github.com/doximity/super_spreader/blob/master/lib/super_spreader/migration_helper.rb).
+For some use cases, a pure-SQL migration or Rake task may be a better fit.  It may also make sense to use **both** background jobs and foreground task (Rails migration or Rake task).  (Consider the database size and number of instances between production and staging.)  For that, you might consider [SuperSpreader::BatchHelper](https://github.com/doximity/super_spreader/blob/master/lib/super_spreader/batch_helper.rb).
 
 The primary criterion to consider is whether the backfill in question is _long-running_.  If you estimate it would take at least a couple of days to complete, it makes sense to consider SuperSpreader.  Another good reason to consider this tool is _code reuse_.  If you already have Ruby-land code that would be difficult or impossible to replicate in SQL, it makes sense to use SuperSpreader, assuming the equivalent Rake task would be impractical.
 
