@@ -112,7 +112,7 @@ RSpec.describe "Integration" do
 
   describe ExampleBackfillJob do
     it "has SuperSpreader support" do
-      expect(described_class.model_class).to eq(ExampleModel)
+      expect(described_class.super_spreader_model_class).to eq(ExampleModel)
     end
 
     it "sets values on instances" do

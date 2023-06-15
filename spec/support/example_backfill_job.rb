@@ -13,7 +13,7 @@ class ExampleBackfillJob < ActiveJob::Base
 
   # This is the model class that will be used when tracking the spread of jobs.
   # It is expected to be an ActiveRecord class.
-  def self.model_class
+  def self.super_spreader_model_class
     ExampleModel
   end
 
