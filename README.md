@@ -214,23 +214,7 @@ SuperSpreader.redis = Redis.new(url: ENV["REDIS_URL"])
 
 ## Roadmap
 
-This is a rough outline of some ideas we are considering implementing, based on the content in this README.
-
-#### Add end time estimate
-
-Add a feature to estimate when the last ID will be processed, which is useful to know when tuning the execution of the scheduler.
-
-#### Allow for multiple concurrent backfills
-
-Currently, SuperSpreader can only backfill using a single scheduler.  This means that only one backfill can run at a given time, which requires coordination amongst engineers.  The scheduler and configuration needs to be changed to allow for multiple concurrent backfills.
-
-#### Monitoring
-
-This document refers to external tooling for monitoring resource usage.  Add instrumentation hooks to allow for internal monitoring.
-
-#### Automated tuning based on backpressure
-
-After adding internal monitoring, we could automate discovery of optimal `batch_size` and `per_second` values, given recommended tolerances such as 100 ms for backfill jobs and 1500 ms for the scheduler.  This would be a significant improvement in DevX.
+Please see [the Milestones on GitHub](https://github.com/doximity/super_spreader/milestones?direction=asc&sort=title&state=open).
 
 ## Development
 
