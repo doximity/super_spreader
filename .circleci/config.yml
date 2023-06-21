@@ -119,7 +119,7 @@ workflows:
           pre_release: true
           requires:
             - pre-release-approval
-          context: artifact_publishing
+          context: nexus_readonly
 
   final-release:
     jobs:
@@ -142,4 +142,4 @@ workflows:
           pre_release: false
           requires:
             - gem-build
-          context: artifact_publishing
+          context: nexus_readonly
