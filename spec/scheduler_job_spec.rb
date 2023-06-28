@@ -91,7 +91,7 @@ RSpec.describe SuperSpreader::SchedulerJob do
   describe "#next_run_at" do
     it "is the configured amount of time in the future" do
       travel_to(Time.new(2020, 12, 16, 0, 0, 0, 0)) do
-        SuperSpreader::SchedulerConfig.new(duration: 3600).save
+        create(:scheduler_config, duration: 3600)
 
         expected_time = Time.new(2020, 12, 16, 1, 0, 0, 0)
         expect(described_class.new.next_run_at).to eq(expected_time)
