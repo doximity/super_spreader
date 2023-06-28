@@ -6,7 +6,7 @@ PATH
       activemodel (>= 6.1, < 8.0)
       activerecord (>= 6.1, < 8.0)
       activesupport (>= 6.1, < 8.0)
-      redis (< 5)
+      redis (>= 4.8, < 6.0)
 
 GEM
   remote: https://rubygems.org/
