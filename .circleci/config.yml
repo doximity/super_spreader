@@ -36,6 +36,7 @@ executors:
       - image: redis:6.2
 
 # yaml anchor filters
+
 master_only: &master_only
   filters:
     branches:
