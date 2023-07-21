@@ -1,0 +1,19 @@
+name: "🤖▶️ Create final release"
+
+on:
+  pull_request:
+    types:
+      - closed
+  workflow_dispatch:
+
+jobs:
+  final-release:
+    if: (github.event_name == 'workflow_dispatch' && github.ref_type == 'tag' && startsWith(github.ref_name, 'v')) ||
+        (github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'gem-release-automation'))
+    uses: doximity/dox-gh-shared-workflows/.github/workflows/gem_final_release.yml@master
+    with:
+      ruby_version: "3.1"
+      create-release: true
+    permissions:
+      contents: write
+    secrets: inherit

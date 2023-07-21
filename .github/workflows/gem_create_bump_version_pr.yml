@@ -1,0 +1,24 @@
+name: "▶️ Create bump version PR"
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: "Release type"
+        required: true
+        default: "minor"
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  open_pull_request:
+    uses: doximity/dox-gh-shared-workflows/.github/workflows/gem_create_bump_version_pr.yml@master
+    with:
+      release_type: ${{ github.event.inputs.release_type }}
+    permissions:
+      contents: write
+      pull-requests: write
+    secrets: inherit

@@ -1,0 +1,25 @@
+name: "▶️ Create pre release"
+
+on:
+  workflow_dispatch:
+    inputs:
+      ruby_version:
+        description: Ruby version for build to use
+        required: false
+        type: string
+        default: "3.1"
+      create-release:
+        description: Create a Github Release?
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  pre-release:
+    uses: doximity/dox-gh-shared-workflows/.github/workflows/gem_pre_release.yml@master
+    with:
+      ruby_version: ${{ inputs.ruby_version }}
+      create-release: ${{ inputs.create-release }}
+    permissions:
+      contents: write
+    secrets: inherit
