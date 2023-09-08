@@ -20,12 +20,16 @@ namespace :check do
   task :redis do
     require "redis"
 
+    inaccessible_error_message = "Redis: inaccessible (please confirm that a Redis server is installed and running, e.g. redis-server)"
+
     redis = Redis.new(url: ENV["REDIS_URL"])
 
     if redis.ping == "PONG"
       puts "Redis: OK"
     else
-      raise "Redis: inaccessible (please confirm that a Redis server is installed and running)"
+      raise inaccessible_error_message
     end
+  rescue Redis::CannotConnectError
+    raise inaccessible_error_message
   end
 end
