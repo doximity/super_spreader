@@ -49,4 +49,20 @@ RSpec.describe SuperSpreader::BatchHelper do
       expect(ExampleModel.where.not(example_attribute: nil).count).to eq(0)
     end
   end
+
+  it "prevents invalid table names" do
+    evil_backfill_migration = Class.new(ActiveRecord::Migration[6.1]) do
+      include SuperSpreader::BatchHelper
+
+      def up
+        # https://imgs.xkcd.com/comics/exploits_of_a_mom.png
+        batch_execute(table_name: "example_models; DROP TABLE Students; --", step_size: 100)
+      end
+    end
+
+    ActiveRecord::Migration.suppress_messages do
+      expect { evil_backfill_migration.migrate(:up) }.
+        to raise_error(ActiveRecord::StatementInvalid, /\bno such table\b/)
+    end
+  end
 end
