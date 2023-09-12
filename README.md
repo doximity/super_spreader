@@ -12,7 +12,7 @@ This tool is built to backfill many millions of records in a resource-efficient 
 
 ## Warnings
 
-**Please be aware:** SuperSpreader is still fairly early in development.  While it can be used effecively by experienced hands, we are aware that it could have a better developer experience (DevX).  It was written to solve a specific problem (see "History").  We are working to generalize the tool as the need arises.  Pull requests are welcome!
+**Please be aware:** SuperSpreader is still fairly early in development.  While it can be used effectively by experienced hands, we are aware that it could have a better developer experience (DevX).  It was written to solve a specific problem (see "History").  We are working to generalize the tool as the need arises.  Pull requests are welcome!
 
 Please also see "Roadmap" for other known limitations that may be relevant to you.
 
@@ -80,7 +80,7 @@ Finally, SuperSpreader can be stopped instantly and resumed at a later time, if 
 
 To repeat an earlier disclaimer:
 
-> **Please be aware:** SuperSpreader is still fairly early in development.  While it can be used effecively by experienced hands, we are aware that it could have a better developer experience (DevX).  It was written to solve a specific problem (see "History").  We are working to generalize the tool as the need arises.  Pull requests are welcome!
+> **Please be aware:** SuperSpreader is still fairly early in development.  While it can be used  by experienced hands, we are aware that it could have a better developer experience (DevX).  It was written to solve a specific problem (see "History").  We are working to generalize the tool as the need arises.  Pull requests are welcome!
 
 If you haven't yet, please read the "How does it work?" section.  This basic workflow is tested in `spec/integration/backfill_spec.rb`.
 
