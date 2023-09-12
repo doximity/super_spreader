@@ -20,7 +20,7 @@ module SuperSpreader
     # @yield [minimum_id, maximum_id] block that returns SQL to migrate records between minimum_id and maximum_id
     def batch_execute(table_name:, step_size:)
       result = execute(<<~SQL).to_a.flatten
-        SELECT MIN(id) AS min_id, MAX(id) AS max_id FROM #{table_name}
+        SELECT MIN(id) AS min_id, MAX(id) AS max_id FROM #{quote_table_name(table_name)}
       SQL
       min_id = result[0]["min_id"]
       max_id = result[0]["max_id"]
