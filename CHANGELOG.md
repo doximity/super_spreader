@@ -1,6 +1,6 @@
 Changelog
 =========
 
-## 1.0.0.beta1
+## 0.1.0.beta2
 
-* First internal release
+* First external release
