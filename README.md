@@ -235,4 +235,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## License
 
-`super_spreader` is licensed under an Apache 2 license. Contributors are required to sign an contributor license agreement. See LICENSE.txt and CONTRIBUTING.md for more information.
+`super_spreader` is licensed under an Apache 2 license. Contributors are required to sign a contributor license agreement. See LICENSE.txt and CONTRIBUTING.md for more information.
