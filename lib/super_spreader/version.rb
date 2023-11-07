@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module SuperSpreader
-  VERSION = "0.1.0.beta2"
+  VERSION = "0.2.0"
 end
