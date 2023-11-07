@@ -2,10 +2,10 @@ PATH
   remote: .
   specs:
     super_spreader (0.1.0.beta2)
-      activejob (>= 6.1, < 7.0)
-      activemodel (>= 6.1, < 7.0)
-      activerecord (>= 6.1, < 7.0)
-      activesupport (>= 6.1, < 7.0)
+      activejob (>= 6.1, < 8.0)
+      activemodel (>= 6.1, < 8.0)
+      activerecord (>= 6.1, < 8.0)
+      activesupport (>= 6.1, < 8.0)
       redis (>= 4.8, < 6.0)
 
 GEM
