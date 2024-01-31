@@ -13,6 +13,7 @@ Gem::Specification.new do |spec|
   spec.summary = "ActiveJob-based backfill orchestration library"
   spec.description = "Provides tools for managing resource-efficient backfills of large datasets via ActiveJob"
   spec.homepage = "https://github.com/doximity/super_spreader"
+  spec.license = "APACHE-2.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
