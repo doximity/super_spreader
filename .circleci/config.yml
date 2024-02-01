@@ -88,101 +88,99 @@ commands:
   install_gem_version:
     parameters:
       gem-version:
-        description: 'The name and version number (e.g. rails-7.0.3) you want installed,
-          specified to the patch version.
-
-          '
+        description: 'The name and version number (e.g. rails-7.0.3) you want installed, specified to the patch version.'
         type: string
         default: ''
     steps:
       - when:
           condition: "<< parameters.gem-version >>"
           steps:
-          - run:
-              name: Unfreeze Bundle
-              command: bundle config set --local frozen 'false'
-          - run:
-              name: Show prior gem version
-              command: |
-                read -r target_gemname target_version \<<< $( echo "<< parameters.gem-version >>" | sed 's/\(.*\)-\([0-9]\{1,3\}\(\.[0-9]\{1,3\}\)*\)/\1 \2/g')
-                version=$(bundle list | sed -n "s/[[:space:]]*\* $target_gemname (\(.*\))/\1/p")
-                if [[ -z "$version" ]]; then
-                  echo "No prior version of ${target_gemname} found."
-                else
-                  echo $version;
-                fi
-          - run:
-              name: Set gem version to << parameters.gem-version >>
-              command: |
-                cd
-                read -r target_gemname target_version \<<< $( echo "<< parameters.gem-version >>" | sed 's/\(.*\)-\([0-9]\{1,3\}\(\.[0-9]\{1,3\}\)*\)/\1 \2/g')
-                gem install $target_gemname -i /tmp/repo --no-document -v $target_version
-
-                echo 'Delete any gems matching the newly installed ones from the existing cache'
-                for line in $(ls /tmp/repo/cache | grep gem); do
-                  read -r gemname version \<<< $( echo $line | sed 's/\(.*\)-\([0-9]\{1,3\}\(\.[0-9]\{1,3\}\)*\)[^0-9\.]*.*.gem/\1 \2/g')
-                  if [ $gemname = 'bundler' ]; # skip bundler
-                    then continue
+            - run:
+                name: Unfreeze Bundle
+                command: bundle config set --local frozen 'false'
+            - run:
+                name: Show prior gem version
+                command: |
+                  read -r target_gemname target_version \<<< $( echo "<< parameters.gem-version >>" | sed 's/\(.*\)-\([0-9]\{1,3\}\(\.[0-9]\{1,3\}\)*\)/\1 \2/g')
+                  version=$(bundle list | sed -n "s/[[:space:]]*\* $target_gemname (\(.*\))/\1/p")
+                  if [[ -z "$version" ]]; then
+                    echo "No prior version of ${target_gemname} found."
+                  else
+                    echo $version;
                   fi
-                  rm -f ~/project/vendor/cache/$gemname*.gem
-                done;
+            - run:
+                name: Set gem version to << parameters.gem-version >>
+                command: |
+                  cd
+                  mkdir -p ~/project/vendor/cache
+                  read -r target_gemname target_version \<<< $( echo "<< parameters.gem-version >>" | sed 's/\(.*\)-\([0-9]\{1,3\}\(\.[0-9]\{1,3\}\)*\)/\1 \2/g')
+                  gem install $target_gemname -i /tmp/repo --no-document -v $target_version
 
-                echo 'The following gems will be copied into the project: '
-                ls -l /tmp/repo/cache
-                cp /tmp/repo/cache/*.gem ~/project/vendor/cache
+                  echo 'Delete any gems matching the newly installed ones from the existing cache'
+                  for line in $(ls /tmp/repo/cache | grep gem); do
+                    read -r gemname version \<<< $( echo $line | sed 's/\(.*\)-\([0-9]\{1,3\}\(\.[0-9]\{1,3\}\)*\)[^0-9\.]*.*.gem/\1 \2/g')
+                    if [ $gemname = 'bundler' ]; # skip bundler
+                      then continue
+                    fi
+                    rm -f ~/project/vendor/cache/$gemname*.gem
+                  done;
 
-                echo 'Showing gems in the project cache: ls -al ~/project/vendor/cache'
-                ls -al ~/project/vendor/cache
+                  echo 'The following gems will be copied into the project: '
+                  ls -l /tmp/repo/cache
+                  cp /tmp/repo/cache/*.gem ~/project/vendor/cache
 
-                cd ~/project
-                echo 'Removing Gemfile.lock'
-                rm -f ./Gemfile.lock
+                  echo 'Showing gems in the project cache: ls -al ~/project/vendor/cache'
+                  ls -al ~/project/vendor/cache
 
-                echo 'Fancy replacement. Set all gems in the gemspec to what we currently have in the vendor/cache.'
-                for line in $(ls vendor/cache | grep gem); do
-                  # we don't care about the .gem, get rid of it
-                  trimmed_line=${line%%.gem}
-                  # version to include anything after the gem name so we can pick up prerelease versions
-                  read -r gemname version \<<< $( echo $trimmed_line | sed 's/\(.*\)-\([0-9]\{1,3\}\(\.[0-9]\{1,3\}\)*[^0-9\.]*.*\)/\1 \2/g' )
+                  cd ~/project
+                  echo 'Removing Gemfile.lock'
+                  rm -f ./Gemfile.lock
 
-                  # leave bundler alone
-                  if [ $gemname = 'bundler' ];
-                    then continue
-                  fi
+                  echo 'Fancy replacement. Set all gems in the gemspec to what we currently have in the vendor/cache.'
+                  for line in $(ls vendor/cache | grep gem); do
+                    # we don't care about the .gem, get rid of it
+                    trimmed_line=${line%%.gem}
+                    # version to include anything after the gem name so we can pick up prerelease versions
+                    read -r gemname version \<<< $( echo $trimmed_line | sed 's/\(.*\)-\([0-9]\{1,3\}\(\.[0-9]\{1,3\}\)*[^0-9\.]*.*\)/\1 \2/g' )
 
-                  # strip out platform info from version, we just want the number plus any prerelease identifiers
-                  version=$(echo $version | cut -d "-" -f 1)
+                    # leave bundler alone
+                    if [ $gemname = 'bundler' ];
+                      then continue
+                    fi
 
-                  sed -i "s/\(.*_dependency \"$gemname\"\)".*"/\1, \"~> $version\"/g" *.gemspec
+                    # strip out platform info from version, we just want the number plus any prerelease identifiers
+                    version=$(echo $version | cut -d "-" -f 1)
 
-                  if [[ "$gemname" = "$target_gemname" ]]; then
-                    if [[ -z "$(sed -n "s/\(.*_dependency \"$gemname\"\).*\"/\1/p" *.gemspec)" ]];
-                    then
-                      echo 'No pre-existing version, adding version';
-                      replacement="spec\\.add_development_dependency \"$gemname\", \"~> $version\""
-                      sed -e "0,/add.*dependency/{/add.*dependency/a\  $replacement" -e "}" -i -- *.gemspec
-                    else
-                      echo 'nothing to do';
+                    sed -i "s/\(.*_dependency \"$gemname\"\)".*"/\1, \"~> $version\"/g" *.gemspec
+
+                    if [[ "$gemname" = "$target_gemname" ]]; then
+                      if [[ -z "$(sed -n "s/\(.*_dependency \"$gemname\"\).*\"/\1/p" *.gemspec)" ]];
+                      then
+                        echo 'No pre-existing version, adding version';
+                        replacement="spec\\.add_development_dependency \"$gemname\", \"~> $version\""
+                        sed -e "0,/add.*dependency/{/add.*dependency/a\  $replacement" -e "}" -i -- *.gemspec
+                      else
+                        echo 'nothing to do';
+                      fi;
                     fi;
-                  fi;
-                done;
+                  done;
 
-                echo 'cat *.gemspec'
-                cat *.gemspec
+                  echo 'cat *.gemspec'
+                  cat *.gemspec
 
-                echo 'bundle install --local --no-cache'
-                bundle install --local --no-cache
-          - run:
-              name: Gem version after upgrade
-              command: |
-                read -r target_gemname target_version \<<< $( echo "<< parameters.gem-version >>" | sed 's/\(.*\)-\([0-9]\{1,3\}\(\.[0-9]\{1,3\}\)*\)/\1 \2/g')
-                version=$(bundle list | sed -n "s/[[:space:]]*\* $target_gemname (\(.*\))/\1/p")
-                if [[ -z "$version" ]]; then
-                  echo "${target_gemname} was somehow not installed."
-                  exit 1
-                else
-                  echo $version;
-                fi
+                  echo 'bundle install --local --no-cache'
+                  bundle install --local --no-cache
+            - run:
+                name: Gem version after upgrade
+                command: |
+                  read -r target_gemname target_version \<<< $( echo "<< parameters.gem-version >>" | sed 's/\(.*\)-\([0-9]\{1,3\}\(\.[0-9]\{1,3\}\)*\)/\1 \2/g')
+                  version=$(bundle list | sed -n "s/[[:space:]]*\* $target_gemname (\(.*\))/\1/p")
+                  if [[ -z "$version" ]]; then
+                    echo "${target_gemname} was somehow not installed."
+                    exit 1
+                  else
+                    echo $version;
+                  fi
 
   run_rspec_tests:
     parameters:
