@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 0.2.1
+
+* Specify license in gemspec
+
 ## 0.2.0
 
 * First release (see also #53)
