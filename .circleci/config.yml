@@ -1,26 +1,5 @@
 version: 2.1
 
-#branch filters for workflows
-meta:
-  master_only: &master_only
-    filters:
-      branches:
-        only: master
-      tags:
-        ignore: /.*/
-  pr_only: &pr_only
-    filters:
-      branches:
-        ignore: master
-      tags:
-        ignore: /.*/
-  version_tags_only: &version_tags_only
-    filters:
-      branches:
-        ignore: /.*/
-      tags:
-        only: /^v.*/
-
 orbs:
   ci-utils: doximity/ci-utils@2
   gem: doximity/gem-publisher@0
