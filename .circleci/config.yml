@@ -371,6 +371,7 @@ workflows:
               gem-version:
                 - rails-6.1.7
                 - rails-7.0.8
-                - rails-7.1.3
+                # https://github.com/doximity/super_spreader/issues/60
+                # - rails-7.1.3
           name: ruby_mvt_job-ruby-<< matrix.ruby-version >>-<< matrix.gem-version >>
           cache-dependencies: true
