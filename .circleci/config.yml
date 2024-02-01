@@ -1,7 +1,29 @@
-version: '2.1'
+version: 2.1
+
+#branch filters for workflows
+meta:
+  master_only: &master_only
+    filters:
+      branches:
+        only: master
+      tags:
+        ignore: /.*/
+  pr_only: &pr_only
+    filters:
+      branches:
+        ignore: master
+      tags:
+        ignore: /.*/
+  version_tags_only: &version_tags_only
+    filters:
+      branches:
+        ignore: /.*/
+      tags:
+        only: /^v.*/
 
 orbs:
   ci-utils: doximity/ci-utils@2
+  gem: doximity/gem-publisher@0
 
 executors:
   ruby:
@@ -235,7 +257,60 @@ commands:
             eval $RSPEC_COMMAND
 
 jobs:
-  run_tests_ruby:
+  circle_ci_job:
+    parameters:
+      executor:
+        type: string
+        default: base
+      resource_class:
+        type: string
+        default: small
+      parallelism:
+        type: integer
+        default: 1
+      checkout-depth:
+        type: string
+        default: '1'
+      checkout-cache-salt:
+        type: string
+        default: base
+      dependencies:
+        description: Steps to install/manage machine and project dependencies, executed
+          after project checkout.
+        type: steps
+        default: []
+      pre-actions:
+        description: Steps to perform any necessary setup after dependencies are installed.
+        type: steps
+        default: []
+      actions:
+        description: The actions that fulfill the primary purpose of the CI job (tests/checks/etc.)
+        type: steps
+        default:
+          - run:
+              name: No CI Actions Warning
+              command: |
+                echo "No actions provided for CI to perform! Please add desired CI task via pipefitter extension."
+                exit 1
+      post-actions:
+        description: Any artifacting/reporting/cleanup that must occur after the main
+          actions.
+        type: steps
+        default: []
+    executor: "<< parameters.executor >>"
+    resource_class: "<< parameters.resource_class >>"
+    parallelism: "<< parameters.parallelism >>"
+    steps:
+      - ci-utils/ci_checkout:
+          depth: "<< parameters.checkout-depth >>"
+          cache-salt: "<< parameters.checkout-cache-salt >>"
+      - steps: "<< parameters.dependencies >>"
+      - steps: "<< parameters.pre-actions >>"
+      - steps: "<< parameters.actions >>"
+      - steps: "<< parameters.post-actions >>"
+      - ci-utils/quietly_store_artifacts
+
+  ruby_mvt_job:
     parameters:
       executor:
         type: string
@@ -296,7 +371,7 @@ jobs:
 workflows:
   main:
     jobs:
-      - run_tests_ruby:
+      - ruby_mvt_job:
           executor: ruby-with-services
           context: nexus_readonly
           post-actions:
@@ -309,7 +384,6 @@ workflows:
                 test_files: $(circleci tests glob "spec/$TEST_PATTERN/**/*_spec.rb" |
                   circleci tests split --split-by=timings)
           parallelism: 1
-          pre-actions: []
           matrix:
             parameters:
               ruby-version:
@@ -320,5 +394,19 @@ workflows:
                 - rails-6.1.7
                 - rails-7.0.8
                 - rails-7.1.3
-          name: run_tests_ruby-ruby-<< matrix.ruby-version >>-<< matrix.gem-version>>
+          name: ruby_mvt_job-ruby-<< matrix.ruby-version >>-<< matrix.gem-version >>
           cache-dependencies: true
+
+      - gem/build:
+          executor: ruby
+          name: gem-build
+          requires:
+            - ruby_mvt_job-ruby-3.1-rails-6.1.7
+            - ruby_mvt_job-ruby-3.1-rails-7.0.8
+            - ruby_mvt_job-ruby-3.1-rails-7.1.3
+            - ruby_mvt_job-ruby-3.2-rails-6.1.7
+            - ruby_mvt_job-ruby-3.2-rails-7.0.8
+            - ruby_mvt_job-ruby-3.2-rails-7.1.3
+            - ruby_mvt_job-ruby-3.3-rails-6.1.7
+            - ruby_mvt_job-ruby-3.3-rails-7.0.8
+            - ruby_mvt_job-ruby-3.3-rails-7.1.3
