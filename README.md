@@ -211,7 +211,7 @@ For Rails, please set up SuperSpreader using an initializer:
 # config/initializers/super_spreader.rb
 
 SuperSpreader.logger = Rails.logger
-SuperSpreader.redis = Redis.new(url: ENV["REDIS_URL"])
+SuperSpreader.redis = Redis.new(url: ENV.fetch("REDIS_URL"))
 ```
 
 ## Roadmap
