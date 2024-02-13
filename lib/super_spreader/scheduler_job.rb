@@ -4,11 +4,11 @@ require "active_job"
 require "json"
 require "super_spreader/scheduler_config"
 require "super_spreader/spreader"
-require "super_spreader/stop_signal"
+require "track_ballast/stop_signal"
 
 module SuperSpreader
   class SchedulerJob < ActiveJob::Base
-    extend StopSignal
+    extend TrackBallast::StopSignal
 
     def perform
       return if self.class.stopped?

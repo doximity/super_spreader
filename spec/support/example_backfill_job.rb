@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "track_ballast/stop_signal"
+
 # This class is an example job that uses the interface that SuperSpreader
 # expects.  While this job is for backfilling as an example, any problem
 # that can be subdivided into small batches can be implemented.
@@ -9,7 +11,7 @@
 class ExampleBackfillJob < ActiveJob::Base
   # This provides support for stopping the job in an emergency.  Optional, but
   # highly recommended.
-  extend SuperSpreader::StopSignal
+  extend TrackBallast::StopSignal
 
   # This is the model class that will be used when tracking the spread of jobs.
   # It is expected to be an ActiveRecord class.
