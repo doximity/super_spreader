@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    super_spreader (0.2.1)
+    super_spreader (1.0.0.beta)
       activejob (>= 6.1, < 8.0)
       activemodel (>= 6.1, < 8.0)
       activerecord (>= 6.1, < 8.0)
