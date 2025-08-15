@@ -27,11 +27,11 @@ Gem::Specification.new do |spec|
   spec.executables = []
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "activejob", ">= 6.1", "< 8.0"
-  spec.add_dependency "activemodel", ">= 6.1", "< 8.0"
-  spec.add_dependency "activerecord", ">= 6.1", "< 8.0"
-  spec.add_dependency "activesupport", ">= 6.1", "< 8.0"
-  spec.add_dependency "redis", ">= 4.8", "< 6.0"
+  spec.add_dependency "activejob", ">= 7.1"
+  spec.add_dependency "activemodel", ">= 7.1"
+  spec.add_dependency "activerecord", ">= 7.1"
+  spec.add_dependency "activesupport", ">= 7.1"
+  spec.add_dependency "redis", ">= 4.8"
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "factory_bot"
   spec.add_development_dependency "guard"
@@ -41,7 +41,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "rspec-rails"
   spec.add_development_dependency "rspec_junit_formatter"
-  spec.add_development_dependency "sqlite3"
+  spec.add_development_dependency "sqlite3", ">= 2.1"
   spec.add_development_dependency "standard"
   spec.add_development_dependency "yard"
+  spec.add_development_dependency "minitest"
 end
