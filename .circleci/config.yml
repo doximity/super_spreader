@@ -65,11 +65,15 @@ commands:
       - run:
           name: Install Ruby Dependencies
           command: |
+            cat Gemfile.lock
             if [ -d "vendor/cache" ]; then
               bundle install --local --verbose
             else
               bundle install --verbose
             fi
+
+            echo "*****bundle list"
+            bundle list
       - run:
           name: Did you run bundle install after changing Gemfile?
           command: git diff --exit-code Gemfile.lock
@@ -116,6 +120,8 @@ commands:
                   if [[ "$target_gemname" = "rails" && "$target_version" =~ ^8\. ]]; then
                     echo "Detected Rails 8.x, installing sqlite3 2.1.0"
                     gem install sqlite3 -i /tmp/repo --no-document -v 2.1.0
+                  else
+                    gem install sqlite3 -i /tmp/repo --no-document -v 1.7.3
                   fi
 
                   echo 'Delete any gems matching the newly installed ones from the existing cache'
@@ -153,8 +159,6 @@ commands:
                     # strip out platform info from version, we just want the number plus any prerelease identifiers
                     version=$(echo $version | cut -d "-" -f 1)
 
-                    sed -i "s/\(.*_dependency \"$gemname\"\)".*"/\1, \"~> $version\"/g" *.gemspec
-
                     if [[ "$gemname" = "$target_gemname" ]]; then
                       if [[ -z "$(sed -n "s/\(.*_dependency \"$gemname\"\).*\"/\1/p" *.gemspec)" ]];
                       then
@@ -167,11 +171,19 @@ commands:
                     fi;
                   done;
 
+                  if [[ "$target_gemname" = "rails" && "$target_version" =~ ^8\. ]]; then
+                    echo "Detected Rails 8.x, force gemspec to use sqlite3 >= 2.1"
+                    sed -i 's/spec.add_development_dependency "sqlite3"/spec.add_development_dependency "sqlite3", ">= 2.1"/' super_spreader.gemspec
+                  else
+                    sed -i 's/spec.add_development_dependency "sqlite3"/spec.add_development_dependency "sqlite3", "~> 1.7"/' super_spreader.gemspec
+                  fi
+
                   echo 'cat *.gemspec'
                   cat *.gemspec
 
                   echo 'bundle install --local --no-cache'
                   bundle install --local --no-cache
+
             - run:
                 name: Gem version after upgrade
                 command: |
