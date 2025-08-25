@@ -65,15 +65,11 @@ commands:
       - run:
           name: Install Ruby Dependencies
           command: |
-            cat Gemfile.lock
             if [ -d "vendor/cache" ]; then
               bundle install --local --verbose
             else
               bundle install --verbose
             fi
-
-            echo "*****bundle list"
-            bundle list
       - run:
           name: Did you run bundle install after changing Gemfile?
           command: git diff --exit-code Gemfile.lock
@@ -159,6 +155,8 @@ commands:
                     # strip out platform info from version, we just want the number plus any prerelease identifiers
                     version=$(echo $version | cut -d "-" -f 1)
 
+                    sed -i "s/\(.*_dependency \"$gemname\"\)".*"/\1, \"~> $version\"/g" *.gemspec
+
                     if [[ "$gemname" = "$target_gemname" ]]; then
                       if [[ -z "$(sed -n "s/\(.*_dependency \"$gemname\"\).*\"/\1/p" *.gemspec)" ]];
                       then
@@ -183,11 +181,9 @@ commands:
 
                   echo 'bundle install --local --no-cache'
                   bundle install --local --no-cache
-
             - run:
                 name: Gem version after upgrade
                 command: |
-                  cat Gemfile.lock
                   read -r target_gemname target_version \<<< $( echo "<< parameters.gem-version >>" | sed 's/\(.*\)-\([0-9]\{1,3\}\(\.[0-9]\{1,3\}\)*\)/\1 \2/g')
                   version=$(bundle list | sed -n "s/[[:space:]]*\* $target_gemname (\(.*\))/\1/p")
                   if [[ -z "$version" ]]; then
