@@ -5,6 +5,7 @@ require "super_spreader"
 
 require "active_job/test_helper"
 require "active_support/testing/time_helpers"
+require "active_support/testing/assertions"
 require "factory_bot"
 require "pry"
 require "rspec/rails/matchers"
@@ -28,8 +29,16 @@ RSpec.configure do |config|
 
   config.include ActiveJob::TestHelper
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include ActiveSupport::Testing::Assertions
   config.include FactoryBot::Syntax::Methods
   config.include RSpec::Rails::Matchers
+
+  # Rails 8 compatibility: Define minitest-style assert method for ActiveJob TestHelper
+  config.include Module.new {
+    def assert(condition, message = nil)
+      expect(condition).to be_truthy, message
+    end
+  }
 
   config.before :suite do
     ActiveJob::Base.queue_adapter = :test
