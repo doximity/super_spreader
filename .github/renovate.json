@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "doximity/renovate-config:rubyDefaults",
+    "security:only-security-updates"
+  ],
+  "rangeStrategy": "bump",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["* * * * 6"]
+  },
+  "prConcurrentLimit": 5
+}

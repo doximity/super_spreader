@@ -1,0 +1,59 @@
+name: Renovate
+on:
+  workflow_dispatch:
+    inputs:
+      renovate_recreate_when:
+        description: 'Specify the type of recreate PR behavior'
+        required: false
+        type: choice
+        options:
+          - auto
+          - always
+          - never
+        default: auto
+      renovate_base_branch:
+        description: 'Branch to run against (instead of default branch)'
+        required: false
+        type: string
+        default: ''
+      renovate_use_base_branch_config:
+        description: 'Apply branch renovate.json config: none (default) or merge'
+        required: false
+        type: choice
+        options:
+          - none
+          - merge
+        default: none
+      renovate_dry_run:
+        description: |
+          Renovate Dry Run Mode:
+            - null: Default behavior
+            - extract: Quick scan
+            - lookup: Scan with updates
+            - full: Dry run
+        required: false
+        type: choice
+        options:
+          - 'null'
+          - extract
+          - lookup
+          - full
+        default: 'null'
+  schedule:
+    - cron: '31 3 * * *'
+jobs:
+  renovate:
+    permissions:
+      id-token: write
+      contents: read
+    uses: doximity/dox-gh-shared-workflows/.github/workflows/renovate.yml@master
+    with:
+      renovate_recreate_when: ${{ inputs.renovate_recreate_when || 'auto' }}
+      renovate_base_branch: ${{ inputs.renovate_base_branch || '' }}
+      renovate_use_base_branch_config: ${{ inputs.renovate_use_base_branch_config || 'none' }}
+      renovate_dry_run: ${{ inputs.renovate_dry_run || 'null' }}
+    secrets:
+      GH_RO_TOKEN: ${{ secrets.GH_RO_TOKEN }}
+      BUNDLE_ARTIFACTS__DOX__SUPPORT: ${{ secrets.BUNDLE_ARTIFACTS__DOX__SUPPORT }}
+      NEXUS_PULL_USER: ${{ secrets.NEXUS_PULL_USER }}
+      NEXUS_PULL_PASS: ${{ secrets.NEXUS_PULL_PASS }}
