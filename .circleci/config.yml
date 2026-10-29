@@ -14,7 +14,7 @@ executors:
       - image: cimg/ruby:<< parameters.ruby-version >>
         environment:
           REDIS_URL: redis://localhost:6379
-          BUNDLE_VERSION: 2.5.5
+          BUNDLE_VERSION: 4.0.23
 
   ruby-with-services:
     parameters:
@@ -26,7 +26,7 @@ executors:
       - image: cimg/ruby:<< parameters.ruby-version >>
         environment:
           REDIS_URL: redis://localhost:6379
-          BUNDLE_VERSION: 2.5.5
+          BUNDLE_VERSION: 4.0.23
       - image: cimg/redis:6.2
 
 commands:
